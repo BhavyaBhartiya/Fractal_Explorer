@@ -23,19 +23,33 @@
 
         }
 
+        h4{
+            position: absolute;
+            top: 10%;
+            left: 2%;
+            margin: 3% 1%;
+        }
+
+        form{
+            position: absolute;
+            top: 16%;
+            left: 2%;
+            margin: 3% 1%;
+        }
+
     </style>
 
     <body>
-
         <center><h2>Julia Fractals</h2></center>
+        <h4>Zoom = 1</h4>
         <form>
-            <label for="RC">Real Constant: </label>
+            <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
             <input type="text" id="RC" name="RealConstant"><br><br>
-            <label for="IC">Imaginary Constant: </label>
+            <label for="IC">Imaginary C: </label>
             <input type="text" id="IC" name="ImaginaryConstant"><br><br>
-            <label for="MI">MaxIterations</label>
+            <label for="MI">Iterations: &nbsp;&nbsp;&nbsp;&nbsp;</label>
             <input type="text" id="MI" name="MaxIterations"><br><br>
-            <input type="submit" value="Generate">
+            <input type="submit" value="Generate" style = "margin-bottom: 1%;">
         </form>
         <center><canvas></canvas></center>
 
@@ -43,9 +57,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.6.0/math.min.js"></script>
 
-    <script>
+    <!--script>
 
-        var header = document.querySelector('h2')
+        var header = document.querySelector('h4')
         var canvas = document.querySelector('canvas')
         var ctx = canvas.getContext('2d')
 
@@ -168,6 +182,6 @@
 
         update()
 
-    </script>
+    </script>-->
 
 </html>
