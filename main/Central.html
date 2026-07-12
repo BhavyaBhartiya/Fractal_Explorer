@@ -1,13 +1,82 @@
 <!DOCTYPE HTML>
 <html>
-     <head>
-        <title>Julia Fractals</title>
-     </head>
-</html>
+    <head>
+       <title>Julia Fractals</title>
+    </head>
 
-<style>
-    body{
-        background: black;
-        color: white;
-    }
-</style>
+
+    <style>
+        body{
+            background: black;
+            color: white;
+        }
+        canvas{
+            border: 1px solid white;
+        }
+    </style>
+
+    <body>
+        <h2>Julia Fractals</h2>
+        <canvas></canvas>
+    </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.6.0/math.min.js"></script>
+
+    <script>
+        var header = document.querySelector('h2')
+        var canvas = document.querySelector('canvas')
+        var ctx = canvas.getContext('2d')
+
+        var width = 200
+        var height = 200
+
+        canvas.width = width
+        canvas.height = height
+        var mouseX = 0
+        var mouseY = 0
+
+        var constant = math.complex(0.28,0.01)
+
+        function pointToColor(point){
+            var red = point.re*255
+            var green = point.im*255
+            return 'rgb(${red}, ${green}, 0)'
+        }
+
+        function pixelToPoint(x, y){
+            var zx = ((x/width)*2)-1
+            var zy = 1-((y/height)*2)
+
+            return math.complex(zx, zy)
+        }
+
+        function drawPixel(x, y, color){
+            ctx.fillStyle = color
+            ctx.fillRect(x, y, 1, 1)
+        }
+
+        function draw(){
+            var color = pointToColor(constant)
+            drawPixel(mouseX, mouseY, color)
+        }
+
+        function update(){
+            header.innerHTML = constant.toString()
+            draw()
+        }
+
+        function move(event){
+            mouseX = event.clientX - canvas.offsetLeft
+            mouseY = event.clientY - canvas.offsetTop
+
+            constant = pixelToPoint(mouseX, mouseY)
+
+            constant.re = math.round(constant.re*100)/100
+            constant.im = math.round(constant.im*100)/100
+
+            update()
+        }
+        
+        canvas.addEventListener('pointermove',move)
+    </script>
+</html>
