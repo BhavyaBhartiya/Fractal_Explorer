@@ -37,6 +37,14 @@
             margin: 3% 1%;
         }
 
+        #Gen{
+            margin-top: 3%;
+            font-size: 1.5em; 
+            color:cornsilk;
+            background:slategray;
+            border-radius: 10px;
+        }
+
     </style>
 
     <body>
@@ -49,7 +57,7 @@
             <input type="text" id="IC" name="ImaginaryConstant"><br><br>
             <label for="MI">Iterations: &nbsp;&nbsp;&nbsp;&nbsp;</label>
             <input type="text" id="MI" name="MaxIterations"><br><br>
-            <input type="submit" value="Generate" style = "margin-bottom: 1%;">
+            <input type="submit" id="Gen" value="Generate" style = "margin-bottom: 1%;">
         </form>
         <center><canvas></canvas></center>
 
@@ -57,7 +65,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.6.0/math.min.js"></script>
 
-    <!--script>
+    <script>
 
         var header = document.querySelector('h4')
         var canvas = document.querySelector('canvas')
@@ -182,6 +190,6 @@
 
         update()
 
-    </script>-->
+    </script>
 
 </html>
