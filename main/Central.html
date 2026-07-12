@@ -27,8 +27,17 @@
 
     <body>
 
-        <h2>Julia Fractals</h2>
-        <canvas></canvas>
+        <center><h2>Julia Fractals</h2></center>
+        <form>
+            <label for="RC">Real Constant: </label>
+            <input type="text" id="RC" name="RealConstant"><br><br>
+            <label for="IC">Imaginary Constant: </label>
+            <input type="text" id="IC" name="ImaginaryConstant"><br><br>
+            <label for="MI">MaxIterations</label>
+            <input type="text" id="MI" name="MaxIterations"><br><br>
+            <input type="submit" value="Generate">
+        </form>
+        <center><canvas></canvas></center>
 
     </body>
 
@@ -40,8 +49,8 @@
         var canvas = document.querySelector('canvas')
         var ctx = canvas.getContext('2d')
 
-        var width = 200
-        var height = 200
+        var width = 500
+        var height = 450
         canvas.width = width
         canvas.height = height
 
