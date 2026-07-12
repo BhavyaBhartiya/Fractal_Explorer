@@ -49,6 +49,7 @@
         var mouseY = 0
         var clicked = false
         var pan = math.complex(0,0)
+        var zoom = 1
 
         var constant = math.complex(0.28,0.01)
         var maxIterations = 64
@@ -84,6 +85,7 @@
             var zy = 1-((y/height)*2)
             var z = math.complex(zx, zy)
 
+            z = z.div(zoom)
             z = z.add(pan)
 
             return z
@@ -112,7 +114,7 @@
 
         function update() {
             
-            header.innerHTML = constant.toString()
+            header.innerHTML = constant.toString() + ' at ' + zoom + 'X'
             draw()
 
         }
@@ -128,6 +130,7 @@
             mouseY = event.clientY - canvas.offsetTop
 
             pan = pixelToPoint(mouseX, mouseY)
+            zoom *= 2
 
             update()
 
