@@ -82,16 +82,20 @@
             const par = pan_real
             const pid = 2/(height*zoom)
             const prd = 2/(width*zoom)
-            const pii = (1/zoom)+pan_imaginary
-            const pir = par-1/zoom
+            const gr = 255/mi
+            let pii = (1/zoom)+pan_imaginary
 
             for(var y = 0; y<height; y++){
+                let index = y*width*4
+                pii = pii-pid
+                let pir = par-1/zoom
                 for (var x = 0; x<width; x++){
-                    let point_imaginary = pii-pid*y
-                    let point_real = pir+prd*x
+                    let point_imaginary = pii
+                    pir = pir+prd
+                    let point_real = pir
                     let i = 0;
-                    pr2 = point_real*point_real
-                    pi2 = point_imaginary*point_imaginary
+                    let pr2 = point_real*point_real
+                    let pi2 = point_imaginary*point_imaginary
                     while (((pr2+pi2)<4) && (i<mi)) {
                         let temp = (pr2-pi2)+cr
                         point_imaginary = (2*point_real*point_imaginary)+ci
@@ -100,8 +104,8 @@
                         pi2 = point_imaginary*point_imaginary
                         i++
                     }
-                    let grey = i*255/mi
-                    let index = (y*width+x)*4
+                    let grey = gr*i
+                    index = index+4
 
                     data[index] = grey
                     data[index+1] = grey
