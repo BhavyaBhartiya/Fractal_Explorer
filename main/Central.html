@@ -102,19 +102,6 @@
 
         }
 
-        function pointToColor(point_real, point_imaginary) {
-
-            var iterations = julia(point_real, point_imaginary)
-            var percentage = iterations/maxIterations
-
-            var red = percentage*255
-            var green = percentage*255
-            var blue = percentage*255
-
-            return `rgb(${red}, ${green}, ${blue})`
-
-        }
-
         function pixelToPoint(x, y) {
             
             var z_real = ((x/width)*2)-1
@@ -131,13 +118,6 @@
             z[1] = z_imaginary
 
             return z
-
-        }
-
-        function drawPixel(x, y, color) {
-            
-            ctx.fillStyle = color
-            ctx.fillRect(x, y, 1, 1)
 
         }
 
