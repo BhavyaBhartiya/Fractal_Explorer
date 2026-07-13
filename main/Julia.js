@@ -32,10 +32,10 @@ function draw() {
 
     for (var y = 0; y < height; y++) {
         pii = pii - pid
-        let pir = par - 1 / zoom
+        let pir = par + (1 / zoom)
         for (var x = 0; x < width; x++) {
             let point_imaginary = pii
-            pir = pir + prd
+            pir = pir - prd
             let point_real = pir
             let i = 0;
             let pr2 = point_real * point_real
@@ -66,14 +66,12 @@ function update() {
 
 }
 
-function submit() {
-    if (!clicked) {
-        clicked = true
-        var constant_real = document.getElementById("RC").value;
-        var constant_imaginary = document.getElementById("IC").value;
-        var maxIterations = document.getElementById("MI").value;
-        update()
-    }
+function generate() {
+    clicked = true
+    constant_real = parseFloat(document.getElementById("RC").value);
+    constant_imaginary = parseFloat(document.getElementById("IC").value);
+    maxIterations = parseInt(document.getElementById("MI").value, 10);
+    update();
 }
 
 function click(event) {

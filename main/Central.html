@@ -1,55 +1,64 @@
 <!DOCTYPE HTML>
-<html>
-    <head> 
-        <title>Julia Fractals</title>
-    </head>
-    <style>
+<html lang="en">
 
-        body{
-            background: black;
-            color: white;
-        }
-        canvas{
-            border: 1px solid white;
-        }
-        h4{
-            position: absolute;
-            top: 10%;
-            left: 2%;
-            margin: 3% 1%;
-        }
-        form{
-            position: absolute;
-            top: 16%;
-            left: 2%;
-            margin: 3% 1%;
-        }
-        #Gen{
-            margin-top: 3%;
-            font-size: 1.5em; 
-            color:cornsilk;
-            background:slategray;
-            border-radius: 10px;
-        }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julia Fractals</title>
+</head>
+<style>
+    body {
+        background: black;
+        color: white;
+    }
 
-    </style>
-    <body>
+    canvas {
+        border: 1px solid white;
+    }
 
-        <center><h2>Julia Fractals</h2></center>
-        
-        <h4>Zoom = 1</h4>
-        
-        <form id="form1">
-            <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="text" id="RC" name="RealConstant"><br><br>
-            <label for="IC">Imaginary C: </label>
-            <input type="text" id="IC" name="ImaginaryConstant"><br><br>
-            <label for="MI">Iterations: &nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="text" id="MI" name="MaxIterations"><br><br>
-            <button type="button" id="Gen" value="Generate" onclick="submit()" style = "margin-bottom: 1%;">Generate</button>
-        </form>
+    h4 {
+        position: absolute;
+        top: 10%;
+        left: 2%;
+        margin: 3% 1%;
+    }
 
-        <center><canvas></canvas></center>
-    
-    <body>
+    div {
+        position: absolute;
+        top: 16%;
+        left: 2%;
+        margin: 3% 1%;
+    }
+
+    button {
+        margin-top: 3%;
+        font-size: 1.5em;
+        color: cornsilk;
+        background: slategray;
+        border-radius: 10px;
+    }
+</style>
+
+<body>
+    <center>
+        <h2>Julia Fractals</h2>
+    </center>
+
+    <h4>Zoom = 1</h4>
+
+    <div id=input>
+        <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="RC" name="RealConstant" required><br><br>
+        <label for="IC">Imaginary C: </label>
+        <input type="text" id="IC" name="ImaginaryConstant" required><br><br>
+        <label for="MI">Iterations: &nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="MI" name="MaxIterations" required><br><br>
+        <button type="button" onclick="generate()">Generate</button>
+    </div>
+
+    <center><canvas></canvas></center>
+
+    <script src="Julia.js"></script>
+</body>
+
 </html>
