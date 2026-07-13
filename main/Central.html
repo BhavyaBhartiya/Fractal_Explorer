@@ -102,25 +102,6 @@
 
         }
 
-        function pixelToPoint(x, y) {
-            
-            var z_real = ((x/width)*2)-1
-            var z_imaginary = 1-((y/height)*2)
-
-            tr = z_real
-            z_real = ((z_real)/zoom)
-            z_imaginary = ((z_imaginary)/zoom)
-            z_real = z_real+pan_real
-            z_imaginary = z_imaginary+pan_imaginary
-            
-            var z = []
-            z[0] = z_real
-            z[1] = z_imaginary
-
-            return z
-
-        }
-
         function draw() {
             
             var img = ctx.createImageData(width, height)
@@ -128,8 +109,11 @@
 
             for(var y = 0; y<height; y++){
                 for (var x = 0; x<width; x++){
-                    var point = pixelToPoint(x, y)
-                    var iterations = julia(point[0], point[1])
+                    var point_real = ((x/width)*2)-1
+                    var point_imaginary = 1-((y/height)*2)
+                    point_real = (point_real/zoom)+pan_real
+                    point_imaginary = (point_imaginary/zoom)+pan_imaginary
+                    var iterations = julia(point_real, point_imaginary)
                     var grey = iterations*255/maxIterations
                     var index = (y*width+x)*4
 
@@ -162,9 +146,10 @@
             mouseX = event.clientX - canvas.offsetLeft
             mouseY = event.clientY - canvas.offsetTop
 
-            pan = pixelToPoint(mouseX, mouseY)
-            pan_real = pan[0]
-            pan_imaginary = pan[1]
+            pan_real = ((mouseX/width)*2)-1
+            pan_imaginary = 1-((mouseY/height)*2)
+            pan_real = (pan_real/zoom)+pan_real
+            pan_imaginary = (pan_imaginary/zoom)+pan_imaginary
             zoom *= 2
 
             update()
@@ -180,9 +165,10 @@
             mouseX = event.clientX - canvas.offsetLeft
             mouseY = event.clientY - canvas.offsetTop
 
-            constant = pixelToPoint(mouseX, mouseY)
-            constant_real = constant[0]
-            constant_imaginary = constant[1]
+            constant_real = ((mouseX/width)*2)-1
+            constant_imaginary = 1-((mouseY/height)*2)
+            constant_real = (constant_real/zoom)+pan_real
+            constant_imaginary = (constant_imaginary/zoom)+pan_imaginary
 
             constant_real = Math.round(constant_real*100)/100
             constant_imaginary = Math.round(constant_imaginary*100)/100
