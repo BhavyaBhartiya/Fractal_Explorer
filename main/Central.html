@@ -1,42 +1,29 @@
 <!DOCTYPE HTML>
 <html>
-
-    <head>
-       
+    <head> 
         <title>Julia Fractals</title>
-
     </head>
-
-
     <style>
-        
+
         body{
-        
             background: black;
             color: white;
-
         }
-
         canvas{
-        
             border: 1px solid white;
-
         }
-
         h4{
             position: absolute;
             top: 10%;
             left: 2%;
             margin: 3% 1%;
         }
-
         form{
             position: absolute;
             top: 16%;
             left: 2%;
             margin: 3% 1%;
         }
-
         #Gen{
             margin-top: 3%;
             font-size: 1.5em; 
@@ -46,10 +33,12 @@
         }
 
     </style>
-
     <body>
+
         <center><h2>Julia Fractals</h2></center>
+        
         <h4>Zoom = 1</h4>
+        
         <form>
             <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
             <input type="text" id="RC" name="RealConstant"><br><br>
@@ -59,63 +48,60 @@
             <input type="text" id="MI" name="MaxIterations"><br><br>
             <input type="submit" id="Gen" value="Generate" style = "margin-bottom: 1%;">
         </form>
+
         <center><canvas></canvas></center>
 
     </body>
-
     <script>
 
         var header = document.querySelector('h4')
         var canvas = document.querySelector('canvas')
         var ctx = canvas.getContext('2d')
-
         var width = 500
         var height = 450
-        canvas.width = width
-        canvas.height = height
-
         var mouseX = 0
         var mouseY = 0
         var clicked = false
         var pan_real = 0
         var pan_imaginary = 0
         var zoom = 1
-
         var constant_real = 0.28
         var constant_imaginary = 0.01
-        var maxIterations = 64
-            
-        function julia(z_real, z_imaginary) {
+        var maxIterations = 128
+        var img = ctx.createImageData(width, height)
+        var data = img.data
 
-            let i = 0;
-
-            while ((((z_real*z_real)+(z_imaginary*z_imaginary))<=4) && (i<maxIterations)) {
-                let zr2 = (z_real*z_real);
-                let zi2 = (z_imaginary*z_imaginary);
-                let temp = (zr2-zi2)+constant_real;
-                z_imaginary = (2*z_real*z_imaginary)+constant_imaginary;
-                z_real = temp;
-                i++;
-            }
-
-            return i;
-
-        }
+        canvas.width = width
+        canvas.height = height
 
         function draw() {
-            
-            var img = ctx.createImageData(width, height)
-            var data = img.data
+
+            const cr = constant_real
+            const ci = constant_imaginary
+            const mi = maxIterations
+            const par = pan_real
+            const pid = 2/(height*zoom)
+            const prd = 2/(width*zoom)
+            const pii = (1/zoom)+pan_imaginary
+            const pir = par-1/zoom
 
             for(var y = 0; y<height; y++){
                 for (var x = 0; x<width; x++){
-                    var point_real = ((x/width)*2)-1
-                    var point_imaginary = 1-((y/height)*2)
-                    point_real = (point_real/zoom)+pan_real
-                    point_imaginary = (point_imaginary/zoom)+pan_imaginary
-                    var iterations = julia(point_real, point_imaginary)
-                    var grey = iterations*255/maxIterations
-                    var index = (y*width+x)*4
+                    let point_imaginary = pii-pid*y
+                    let point_real = pir+prd*x
+                    let i = 0;
+                    pr2 = point_real*point_real
+                    pi2 = point_imaginary*point_imaginary
+                    while ((((pr2*pr2)+(pi2*pi2))<=4) && (i<mi)) {
+                        let temp = (pr2-pi2)+cr
+                        point_imaginary = (2*point_real*point_imaginary)+ci
+                        point_real = temp
+                        pr2 = point_real*point_real
+                        pi2 = point_imaginary*point_imaginary
+                        i++
+                    }
+                    let grey = i*255/mi
+                    let index = (y*width+x)*4
 
                     data[index] = grey
                     data[index+1] = grey
@@ -147,8 +133,8 @@
             mouseY = event.clientY - canvas.offsetTop
 
             pan_real = ((mouseX/width)*2)-1
-            pan_imaginary = 1-((mouseY/height)*2)
             pan_real = (pan_real/zoom)+pan_real
+            pan_imaginary = 1-((mouseY/height)*2)
             pan_imaginary = (pan_imaginary/zoom)+pan_imaginary
             zoom *= 2
 
@@ -169,7 +155,6 @@
             constant_imaginary = 1-((mouseY/height)*2)
             constant_real = (constant_real/zoom)+pan_real
             constant_imaginary = (constant_imaginary/zoom)+pan_imaginary
-
             constant_real = Math.round(constant_real*100)/100
             constant_imaginary = Math.round(constant_imaginary*100)/100
 
@@ -179,9 +164,7 @@
         
         canvas.addEventListener('click',click)
         canvas.addEventListener('pointermove',move)
-
         update()
 
     </script>
-
 </html>
