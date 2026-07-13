@@ -79,27 +79,31 @@
         var mouseX = 0
         var mouseY = 0
         var clicked = false
-        var pan = math.complex(0,0)
+        var pan_real = 0
+        var pan_imaginary = 0
         var zoom = 1
 
-        var constant = math.complex(0.28,0.01)
+        var constant_real = 0.28
+        var constant_imaginary = 0.01
         var maxIterations = 64
 
-        function julia(z, i = 0) {
+        function julia(z_real, z_imaginary, i = 0) {
             
-            z = z.mul(z)
-            z = z.add(constant)
+            z_real = (z_real)*(z_real) - (z_imaginary)*(z_imaginary)
+            z_imaginary = 2*(z_real)*(z_imaginary)
+            z_real = z_real+constant_real
+            z_imaginary = z_imaginary+constant_imaginary
 
-            if(math.abs(z)>2 || i==maxIterations)
+            if((z_real)*(z_real) + (z_imaginary)*(z_imaginary)>4 || i==maxIterations)
                 return i
             else
-                return julia(z, i+1)
+                return julia(z_real, z_imaginary, i+1)
 
         }
 
-        function pointToColor(point) {
+        function pointToColor(point_real, point_imaginary) {
 
-            var iterations = julia(point)
+            var iterations = julia(point_real, point_imaginary)
             var percentage = iterations/maxIterations
 
             var red = percentage * 255
