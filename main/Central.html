@@ -89,8 +89,9 @@
 
         function julia(z_real, z_imaginary, i = 0) {
             
+            tr = z_real
             z_real = (z_real)*(z_real) - (z_imaginary)*(z_imaginary)
-            z_imaginary = 2*(z_real)*(z_imaginary)
+            z_imaginary = 2*tr*(z_imaginary)
             z_real = z_real+constant_real
             z_imaginary = z_imaginary+constant_imaginary
 
@@ -116,13 +117,17 @@
 
         function pixelToPoint(x, y) {
             
-            var zx = ((x/width)*2)-1
-            var zy = 1-((y/height)*2)
-            var z = math.complex(zx, zy)
+            var z_real = ((x/width)*2)-1
+            var z_imaginary = 1-((y/height)*2)
 
-            z = z.div(zoom)
-            z = z.add(pan)
-
+            tr = z_real
+            z_real = ((z_real)/zoom)
+            z_imaginary = ((z_imaginary)/zoom)
+            z_real = z_real+pan_real
+            z_imaginary = z_imaginary+pan_imaginary
+            var z = []
+            z[0] = z_real
+            z[1] = z_imaginary
             return z
 
         }
@@ -139,8 +144,8 @@
             for(var y = 0; y<height; y++){
                 for(var x = 0; x<width; x++){
                     var point = pixelToPoint(x, y)
-                    var color = pointToColor(point)
-            
+                    var color = pointToColor(point[0], point[1])
+
                     drawPixel(x, y, color)
                 }
             }
@@ -149,7 +154,7 @@
 
         function update() {
             
-            header.innerHTML = constant.toString() + ' at ' + zoom + 'X'
+            header.innerHTML = constant_real.toString() + ' + ' + constant_imaginary.toString() + 'i at ' + zoom + 'X'
             draw()
 
         }
@@ -165,6 +170,8 @@
             mouseY = event.clientY - canvas.offsetTop
 
             pan = pixelToPoint(mouseX, mouseY)
+            pan_real = pan[0]
+            pan_imaginary = pan[1]
             zoom *= 2
 
             update()
@@ -181,9 +188,11 @@
             mouseY = event.clientY - canvas.offsetTop
 
             constant = pixelToPoint(mouseX, mouseY)
+            constant_real = constant[0]
+            constant_imaginary = constant[1]
 
-            constant.re = math.round(constant.re*100)/100
-            constant.im = math.round(constant.im*100)/100
+            constant_real = Math.round(constant_real*100)/100
+            constant_imaginary = Math.round(constant_imaginary*100)/100
 
             update()
 
