@@ -67,9 +67,10 @@
         var zoom = 1
         var constant_real = 0.28
         var constant_imaginary = 0.01
-        var maxIterations = 128
+        var maxIterations = 512
         var img = ctx.createImageData(width, height)
         var data = img.data
+        const buf32 = new Uint32Array(img.data.buffer)
 
         canvas.width = width
         canvas.height = height
@@ -86,7 +87,6 @@
             let pii = (1/zoom)+pan_imaginary
 
             for(var y = 0; y<height; y++){
-                let index = y*width*4
                 pii = pii-pid
                 let pir = par-1/zoom
                 for (var x = 0; x<width; x++){
@@ -104,13 +104,9 @@
                         pi2 = point_imaginary*point_imaginary
                         i++
                     }
-                    let grey = gr*i
-                    index = index+4
 
-                    data[index] = grey
-                    data[index+1] = grey
-                    data[index+2] = grey
-                    data[index+3] = 255
+                    let grey = gr*i
+                    buf32[y * width + x] = (255 << 24) | (grey << 16) | (grey << 8) | grey;
 
                 }
             }
@@ -167,7 +163,16 @@
         }
         
         canvas.addEventListener('click',click)
-        canvas.addEventListener('pointermove',move)
+        var redraw = false
+        canvas.addEventListener('pointermove', (e) => {
+            if(!redraw){
+                redraw = true
+                requestAnimationFrame(() => {
+                    move(e)
+                    redraw = false
+                })
+            }
+        })
         update()
 
     </script>
