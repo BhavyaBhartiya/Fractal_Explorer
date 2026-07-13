@@ -92,7 +92,7 @@
                     let i = 0;
                     pr2 = point_real*point_real
                     pi2 = point_imaginary*point_imaginary
-                    while ((((pr2*pr2)+(pi2*pi2))<=4) && (i<mi)) {
+                    while (((pr2+pi2)<4) && (i<mi)) {
                         let temp = (pr2-pi2)+cr
                         point_imaginary = (2*point_real*point_imaginary)+ci
                         point_real = temp
