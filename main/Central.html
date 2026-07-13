@@ -84,19 +84,21 @@
         var constant_real = 0.28
         var constant_imaginary = 0.01
         var maxIterations = 64
-
-        function julia(z_real, z_imaginary, i = 0) {
             
-            tr = z_real
-            z_real = (z_real)*(z_real) - (z_imaginary)*(z_imaginary)
-            z_imaginary = 2*tr*(z_imaginary)
-            z_real = z_real+constant_real
-            z_imaginary = z_imaginary+constant_imaginary
+        function julia(z_real, z_imaginary) {
 
-            if((z_real)*(z_real) + (z_imaginary)*(z_imaginary)>4 || i==maxIterations)
-                return i
-            else
-                return julia(z_real, z_imaginary, i+1)
+            let i = 0;
+
+            while ((((z_real*z_real)+(z_imaginary*z_imaginary))<=4) && (i<maxIterations)) {
+                let zr2 = (z_real*z_real);
+                let zi2 = (z_imaginary*z_imaginary);
+                let temp = (zr2-zi2)+constant_real;
+                z_imaginary = (2*z_real*z_imaginary)+constant_imaginary;
+                z_real = temp;
+                i++;
+            }
+
+            return i;
 
         }
 
@@ -105,9 +107,9 @@
             var iterations = julia(point_real, point_imaginary)
             var percentage = iterations/maxIterations
 
-            var red = percentage * 255
-            var green = percentage * 255
-            var blue = percentage * 255
+            var red = percentage*255
+            var green = percentage*255
+            var blue = percentage*255
 
             return `rgb(${red}, ${green}, ${blue})`
 
@@ -123,9 +125,11 @@
             z_imaginary = ((z_imaginary)/zoom)
             z_real = z_real+pan_real
             z_imaginary = z_imaginary+pan_imaginary
+            
             var z = []
             z[0] = z_real
             z[1] = z_imaginary
+
             return z
 
         }
@@ -139,14 +143,25 @@
 
         function draw() {
             
-            for(var y = 0; y<height; y++){
-                for(var x = 0; x<width; x++){
-                    var point = pixelToPoint(x, y)
-                    var color = pointToColor(point[0], point[1])
+            var img = ctx.createImageData(width, height)
+            var data = img.data
 
-                    drawPixel(x, y, color)
+            for(var y = 0; y<height; y++){
+                for (var x = 0; x<width; x++){
+                    var point = pixelToPoint(x, y)
+                    var iterations = julia(point[0], point[1])
+                    var grey = iterations*255/maxIterations
+                    var index = (y*width+x)*4
+
+                    data[index] = grey
+                    data[index+1] = grey
+                    data[index+2] = grey
+                    data[index+3] = 255
+
                 }
             }
+
+            ctx.putImageData(img, 0, 0)
 
         }
 
