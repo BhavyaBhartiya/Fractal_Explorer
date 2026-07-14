@@ -17,8 +17,8 @@ var clicked = false
 var pan_real = 0
 var pan_imaginary = 0
 var zoom = 1
-var constant_real = 0.28
-var constant_imaginary = 0.01
+var constant_real = 0.280
+var constant_imaginary = 0.010
 var maxIterations = 256
 var zoom_on_click = 10
 var img = ctx.createImageData(width, height)
@@ -105,9 +105,22 @@ function size_change() {
 
 function generate() {
     clicked = true
-    constant_real = parseFloat(document.getElementById("RC").value);
-    constant_imaginary = parseFloat(document.getElementById("IC").value);
-    maxIterations = parseInt(document.getElementById("MI").value, 10);
+    if (document.getElementById("MI").value !== null) {
+        if (document.getElementById("MI").value.trim() !== "") {
+            maxIterations = parseFloat(document.getElementById("MI").value);
+        }
+    }
+    if (document.getElementById("IC").value !== null) {
+        if (document.getElementById("IC").value.trim() !== "") {
+            constant_imaginary = parseFloat(document.getElementById("IC").value);
+        }
+    }
+    
+    if (document.getElementById("RC").value !== null) {
+        if (document.getElementById("RC").value.trim() !== "") {
+            constant_real = parseFloat(document.getElementById("RC").value);
+        }
+    }
     zoom = 1
     update();
 }
@@ -144,8 +157,8 @@ function move(event) {
     constant_imaginary = 1 - ((mouseY / height) * 2)
     constant_real = (constant_real / zoom) + pan_real
     constant_imaginary = (constant_imaginary / zoom) + pan_imaginary
-    constant_real = Math.round(constant_real * 100) / 100
-    constant_imaginary = Math.round(constant_imaginary * 100) / 100
+    constant_real = Math.round(constant_real * 1000) / 1000
+    constant_imaginary = Math.round(constant_imaginary * 1000) / 1000
 
     update()
 
