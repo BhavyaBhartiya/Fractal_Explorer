@@ -8,4 +8,4 @@ This is a Julia fractal explorer created entirely with HTML, CSS, and JavaScript
 
 ## Theme - Endless
 
-I believe this project should be in the Endless theme as it allows the use to explore fractals, which are a geometric pattern that remain similar no matter how much you zoom in, and this project allows the user to experience that interesting phenomenon themselves.
+I believe this project should be in the Endless theme as it explores fractals, which are a geometric pattern that remain similar no matter how much you zoom in, and allows the user to experience that interesting phenomenon themselves.
