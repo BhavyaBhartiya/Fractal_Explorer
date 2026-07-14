@@ -1,8 +1,16 @@
-var header = document.querySelector('h4')
+var header = document.querySelector('h3')
 var canvas = document.querySelector('canvas')
 var ctx = canvas.getContext('2d')
-var width = 500
-var height = 450
+var height = (85*document.documentElement.scrollHeight)/100
+var width = 0
+var condition = true
+for(let h=100; condition==true; h-=5){
+    width = (h*document.documentElement.scrollWidth)/100
+    if(width<=(height+50)){
+        condition=false;
+        break;
+    }
+}
 var mouseX = 0
 var mouseY = 0
 var clicked = false

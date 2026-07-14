@@ -16,47 +16,100 @@
         border: 1px solid white;
     }
 
-    h4 {
+    h3 {
         position: absolute;
-        top: 10%;
-        left: 2%;
-        margin: 3% 1%;
+        top: 90px;
+        left: 35px;
     }
 
-    div {
+    h1 {
         position: absolute;
-        top: 16%;
-        left: 2%;
-        margin: 3% 1%;
+        right: 10px;
+        top: 9px;
+        margin: 0;
+        color: white;
     }
 
-    button {
-        margin-top: 3%;
+    canvas {
+        position: absolute;
+        right: 10px;
+        top: 60px;
+    }
+
+    #input {
+        position: absolute;
+        top: 150px;
+        left: 35px;
+    }
+
+    #Gen {
         font-size: 1.5em;
         color: cornsilk;
         background: slategray;
-        border-radius: 10px;
+        border-radius: 15px;
+        padding: 10px 15px 10px 15px;
+        border-top: 2px;
+        border-bottom: 2px;
+        border-left: 2px;
+        border-right: 2px;
+        border-color: black;
+    }
+
+    #plus {
+        position: absolute;
+        top: 340px;
+        left: 35px;
+        font-size: 1.4em;
+        color: cornsilk;
+        background: slategray;
+        border-radius: 12px;
+        border-color: black;
+        padding: 5px 10px 5px 10px;
+        border-top: 2px;
+        border-bottom: 2px;
+        border-left: 2px;
+        border-right: 2px;
+        border-color: black;
+    }
+
+    #minus {
+        position: absolute;
+        top: 340px;
+        left: 100px;
+        font-size: 1.4em;
+        color: cornsilk;
+        background: slategray;
+        border-radius: 12px;
+        padding: 5px 10px 5px 10px;
+        border-top: 2px;
+        border-bottom: 2px;
+        border-left: 2px;
+        border-right: 2px;
+        border-color: black;
     }
 </style>
 
 <body>
-    <center>
-        <h2>Julia Fractals</h2>
-    </center>
+    <h1>Julia Fractals</h1>
 
-    <h4>Zoom = 1</h4>
+    <h3>Zoom = 1</h3>
 
-    <div id=input>
+    <div id="input">
         <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input type="text" id="RC" name="RealConstant" required><br><br>
         <label for="IC">Imaginary C: </label>
         <input type="text" id="IC" name="ImaginaryConstant" required><br><br>
         <label for="MI">Iterations: &nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input type="text" id="MI" name="MaxIterations" required><br><br>
-        <button type="button" onclick="generate()">Generate</button>
+        <button type="button" id="Gen" onclick="generate()">Generate</button>
     </div>
 
-    <center><canvas></canvas></center>
+    <div id="zoom_button">
+        <button type="button" id="plus">+</button>
+        <button type="button" id="minus">−</button>
+    </div>
+
+    <canvas></canvas>
 
     <script src="Julia.js"></script>
 </body>
