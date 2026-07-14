@@ -11,6 +11,8 @@ for(let h=100; condition==true; h-=5){
         break;
     }
 }
+var center_align=300+((window.innerWidth-300-width)/2)
+document.getElementById('canv').style.left = center_align+'px' 
 var mouseX = 0
 var mouseY = 0
 var clicked = false

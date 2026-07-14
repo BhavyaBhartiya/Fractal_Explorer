@@ -23,16 +23,15 @@
     }
 
     h1 {
-        position: absolute;
-        right: 10px;
-        top: 9px;
         margin: 0;
+        margin-top: 2px;
+        font-size: 2.5em;
         color: white;
     }
 
     canvas {
         position: absolute;
-        right: 10px;
+        margin: 0;
         top: 60px;
     }
 
@@ -90,7 +89,7 @@
 </style>
 
 <body>
-    <h1>Julia Fractals</h1>
+    <center><h1>Julia Fractals</h1></center>
 
     <h3>Zoom = 1</h3>
 
@@ -109,7 +108,7 @@
         <button type="button" id="minus">−</button>
     </div>
 
-    <canvas></canvas>
+    <canvas id="canv"></canvas>
 
     <script src="Julia.js"></script>
 </body>
