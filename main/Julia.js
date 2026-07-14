@@ -20,12 +20,23 @@ var zoom = 1
 var constant_real = 0.28
 var constant_imaginary = 0.01
 var maxIterations = 256
+var zoom_on_click = 10
 var img = ctx.createImageData(width, height)
 var data = img.data
 var buf32 = new Uint32Array(img.data.buffer)
 
 canvas.width = width
 canvas.height = height
+
+function zoomin() {
+    zoom *= 2
+    update()
+}
+
+function zoomout() {
+    zoom /= 2
+    update()
+}
 
 function draw() {
 
@@ -74,7 +85,7 @@ function update() {
 
 }
 
-function size_change(){
+function size_change() {
     height = (85 * window.innerHeight) / 100
     for (let h = 100; true; h -= 5) {
         width = (h * window.innerWidth) / 100
@@ -97,6 +108,7 @@ function generate() {
     constant_real = parseFloat(document.getElementById("RC").value);
     constant_imaginary = parseFloat(document.getElementById("IC").value);
     maxIterations = parseInt(document.getElementById("MI").value, 10);
+    zoom = 1
     update();
 }
 
@@ -114,7 +126,6 @@ function click(event) {
     pan_real = (pan_real / zoom) + pan_real
     pan_imaginary = 1 - ((mouseY / height) * 2)
     pan_imaginary = (pan_imaginary / zoom) + pan_imaginary
-    zoom *= 2
 
     update()
 

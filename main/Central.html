@@ -47,11 +47,6 @@
         background: slategray;
         border-radius: 15px;
         padding: 10px 15px 10px 15px;
-        border-top: 2px;
-        border-bottom: 2px;
-        border-left: 2px;
-        border-right: 2px;
-        border-color: black;
     }
 
     #plus {
@@ -64,11 +59,6 @@
         border-radius: 12px;
         border-color: black;
         padding: 5px 10px 5px 10px;
-        border-top: 2px;
-        border-bottom: 2px;
-        border-left: 2px;
-        border-right: 2px;
-        border-color: black;
     }
 
     #minus {
@@ -80,18 +70,13 @@
         background: slategray;
         border-radius: 12px;
         padding: 5px 10px 5px 10px;
-        border-top: 2px;
-        border-bottom: 2px;
-        border-left: 2px;
-        border-right: 2px;
-        border-color: black;
     }
 </style>
 
 <body>
     <center><h1>Julia Fractals</h1></center>
 
-    <h3>Zoom = 1</h3>
+    <h3></h3>
 
     <div id="input">
         <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -104,8 +89,8 @@
     </div>
 
     <div id="zoom_button">
-        <button type="button" id="plus">+</button>
-        <button type="button" id="minus">−</button>
+        <button type="button" id="plus" onclick="zoomin()">+</button>
+        <button type="button" id="minus" onclick="zoomout()">−</button>
     </div>
 
     <canvas id="canv"></canvas>
