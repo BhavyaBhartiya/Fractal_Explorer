@@ -20,10 +20,12 @@ var zoom = 1
 var constant_real = 0.280
 var constant_imaginary = 0.010
 var maxIterations = 256
-var zoom_on_click = 10
 var img = ctx.createImageData(width, height)
 var data = img.data
 var buf32 = new Uint32Array(img.data.buffer)
+var dragging = false
+var lastMouseX = 0
+var lastMouseY = 0
 
 canvas.width = width
 canvas.height = height
@@ -115,13 +117,15 @@ function generate() {
             constant_imaginary = parseFloat(document.getElementById("IC").value);
         }
     }
-    
+
     if (document.getElementById("RC").value !== null) {
         if (document.getElementById("RC").value.trim() !== "") {
             constant_real = parseFloat(document.getElementById("RC").value);
         }
     }
     zoom = 1
+    pan_real = 0
+    pan_imaginary = 0
     update();
 }
 
@@ -132,20 +136,27 @@ function click(event) {
         return
     }
 
-    mouseX = event.clientX - canvas.offsetLeft
-    mouseY = event.clientY - canvas.offsetTop
-
-    pan_real = ((mouseX / width) * 2) - 1
-    pan_real = (pan_real / zoom) + pan_real
-    pan_imaginary = 1 - ((mouseY / height) * 2)
-    pan_imaginary = (pan_imaginary / zoom) + pan_imaginary
-
     update()
 
 }
 
 function move(event) {
 
+    if (dragging) {
+
+        let dx = event.clientX - lastMouseX;
+        let dy = event.clientY - lastMouseY;
+
+        pan_real += dx * (2 / (width * zoom));
+        pan_imaginary += dy * (2 / (height * zoom));
+
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+
+        update();
+        return;
+    }
+    
     if (clicked) {
         return
     }
@@ -165,7 +176,6 @@ function move(event) {
 }
 
 var redraw = false
-canvas.addEventListener('click', click)
 canvas.addEventListener('pointermove', (e) => {
     if (!redraw) {
         redraw = true
@@ -174,6 +184,19 @@ canvas.addEventListener('pointermove', (e) => {
             redraw = false
         })
     }
+})
+canvas.addEventListener('mousedown', (e) => {
+    dragging = true
+    lastMouseX = e.clientX
+    lastMouseY = e.clientY
+})
+canvas.addEventListener('click',(e) =>{
+    if(!dragging){
+        click
+    }
+})
+window.addEventListener('mouseup', (e) => {
+    dragging = false
 })
 window.addEventListener("resize", size_change);
 update()
