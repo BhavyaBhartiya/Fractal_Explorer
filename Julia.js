@@ -1,10 +1,10 @@
 var header = document.querySelector('h3')
 var canvas = document.querySelector('canvas')
 var ctx = canvas.getContext('2d')
-var height = (85 * window.innerHeight) / 100
+var height = Math.floor(((85*window.innerHeight)/100))
 var width = 0
 for (let h = 100; true; h -= 5) {
-    width = (h * window.innerWidth) / 100
+    width = Math.floor(((h*window.innerWidth)/100))
     if (width <= (height + 50)) {
         break;
     }
