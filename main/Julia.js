@@ -1,18 +1,16 @@
 var header = document.querySelector('h3')
 var canvas = document.querySelector('canvas')
 var ctx = canvas.getContext('2d')
-var height = (85*document.documentElement.scrollHeight)/100
+var height = (85 * window.innerHeight) / 100
 var width = 0
-var condition = true
-for(let h=100; condition==true; h-=5){
-    width = (h*document.documentElement.scrollWidth)/100
-    if(width<=(height+50)){
-        condition=false;
+for (let h = 100; true; h -= 5) {
+    width = (h * window.innerWidth) / 100
+    if (width <= (height + 50)) {
         break;
     }
 }
-var center_align=300+((window.innerWidth-300-width)/2)
-document.getElementById('canv').style.left = center_align+'px' 
+var center_align = 300 + ((window.innerWidth - 300 - width) / 2)
+document.getElementById('canv').style.left = center_align + 'px'
 var mouseX = 0
 var mouseY = 0
 var clicked = false
@@ -24,7 +22,7 @@ var constant_imaginary = 0.01
 var maxIterations = 256
 var img = ctx.createImageData(width, height)
 var data = img.data
-const buf32 = new Uint32Array(img.data.buffer)
+var buf32 = new Uint32Array(img.data.buffer)
 
 canvas.width = width
 canvas.height = height
@@ -74,6 +72,24 @@ function update() {
     header.innerHTML = constant_real.toString() + ' + ' + constant_imaginary.toString() + 'i at ' + zoom + 'X'
     draw()
 
+}
+
+function size_change(){
+    height = (85 * window.innerHeight) / 100
+    for (let h = 100; true; h -= 5) {
+        width = (h * window.innerWidth) / 100
+        if (width <= (height + 50)) {
+            break;
+        }
+    }
+    center_align = 300 + ((window.innerWidth - 300 - width) / 2)
+    document.getElementById('canv').style.left = center_align + 'px'
+    canvas.width = width
+    canvas.height = height
+    img = ctx.createImageData(width, height)
+    data = img.data
+    buf32 = new Uint32Array(img.data.buffer)
+    update()
 }
 
 function generate() {
@@ -135,4 +151,5 @@ canvas.addEventListener('pointermove', (e) => {
         })
     }
 })
+window.addEventListener("resize", size_change);
 update()
