@@ -129,17 +129,6 @@ function generate() {
     update();
 }
 
-function click(event) {
-
-    if (!clicked) {
-        clicked = true
-        return
-    }
-
-    update()
-
-}
-
 function move(event) {
 
     if (dragging) {
@@ -189,11 +178,6 @@ canvas.addEventListener('mousedown', (e) => {
     dragging = true
     lastMouseX = e.clientX
     lastMouseY = e.clientY
-})
-canvas.addEventListener('click',(e) =>{
-    if(!dragging){
-        click
-    }
 })
 window.addEventListener('mouseup', (e) => {
     dragging = false
