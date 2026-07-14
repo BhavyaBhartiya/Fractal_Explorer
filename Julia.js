@@ -88,9 +88,9 @@ function update() {
 }
 
 function size_change() {
-    height = (85 * window.innerHeight) / 100
+    height = Math.floor(((85*window.innerHeight)/100))
     for (let h = 100; true; h -= 5) {
-        width = (h * window.innerWidth) / 100
+        width = Math.floor(((h*window.innerWidth)/100))
         if (width <= (height + 50)) {
             break;
         }
