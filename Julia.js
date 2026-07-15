@@ -26,7 +26,7 @@ var buf32 = new Uint32Array(img.data.buffer)
 var dragging = false
 var lastMouseX = 0
 var lastMouseY = 0
-var theme = 3
+var theme = 0
 canvas.width = width
 canvas.height = height
 
@@ -72,7 +72,11 @@ function draw() {
             let ms = i+1-Math.log2(Math.log2(Math.sqrt(pi2+pr2)))
             let c = ms/mi
 
-            if(i==mi){
+            if(theme == 0){
+                let grey = i*255/mi
+                buf32[y * width + x] = (255 << 24) | (grey << 16) | (grey << 8) | grey;
+            }
+            else if(i==mi){
                 buf32[y*width+x] = 0xFF000000
             }
             else if(theme == 1){
@@ -87,7 +91,7 @@ function draw() {
                 let b = Math.floor(Math.max(0,255*(c-0.8)*5))
                 buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
             }
-            else if(theme == 7){
+            else if(theme == 3){
                 let r = Math.floor(c*30)
                 let g = Math.floor(200*c)
                 let b = Math.floor(255*(0.3+0.7*c))
@@ -111,7 +115,7 @@ function draw() {
                 let b = 255
                 buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
             }
-            else if(theme == 3){
+            else if(theme == 7){
                 let a = 1
                 let b = (1-Math.abs((c*360/60)%2-1))
                 let r=0,g=0,bl=0
