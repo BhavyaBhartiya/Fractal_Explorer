@@ -26,7 +26,7 @@ var buf32 = new Uint32Array(img.data.buffer)
 var dragging = false
 var lastMouseX = 0
 var lastMouseY = 0
-
+var theme = 3
 canvas.width = width
 canvas.height = height
 
@@ -48,7 +48,6 @@ function draw() {
     const par = pan_real
     const pid = 2 / (height * zoom)
     const prd = 2 / (width * zoom)
-    const gr = 255 / mi
     let pii = (1 / zoom) + pan_imaginary
 
     for (var y = 0; y < height; y++) {
@@ -70,8 +69,63 @@ function draw() {
                 i++
             }
 
-            let grey = gr * i
-            buf32[y * width + x] = (255 << 24) | (grey << 16) | (grey << 8) | grey;
+            let ms = i+1-Math.log2(Math.log2(Math.sqrt(pi2+pr2)))
+            let c = ms/mi
+
+            if(i==mi){
+                buf32[y*width+x] = 0xFF000000
+            }
+            else if(theme == 1){
+                let r = Math.floor(9*(1-c)*c*c*c*255)
+                let g = Math.floor(15*(1-c)*(1-c)*c*c*255)
+                let b = Math.floor(8.5*(1-c)*(1-c)*(1-c)*c*255)
+                buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
+            }
+            else if(theme == 2){
+                let r = Math.floor(Math.min(255,255*c*2))
+                let g = Math.floor(Math.max(0,255*(c-0.35)*1.8))
+                let b = Math.floor(Math.max(0,255*(c-0.8)*5))
+                buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
+            }
+            else if(theme == 7){
+                let r = Math.floor(c*30)
+                let g = Math.floor(200*c)
+                let b = Math.floor(255*(0.3+0.7*c))
+                buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
+            }
+            else if(theme == 4){
+                let r = Math.floor(255 * c)
+                let g = Math.floor(100 * Math.sin(Math.PI * c) * Math.sin(Math.PI * c))
+                let b = Math.floor(255 * (1-c))
+                buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
+            }
+            else if(theme == 5){
+                let r = Math.floor(80 * c)
+                let g = Math.floor(255*c)
+                let b = Math.floor(100 * (1-c))
+                buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
+            }
+            else if(theme == 6){
+                let r = Math.floor(180 * c)
+                let g = Math.floor(220*c)
+                let b = 255
+                buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
+            }
+            else if(theme == 3){
+                let a = 1
+                let b = (1-Math.abs((c*360/60)%2-1))
+                let r=0,g=0,bl=0
+                if((c*360)<60){r=1;g=b;}
+                else if((c*360)<120){r=b;g=1;}
+                else if((c*360)<180){g=1;bl=b;}
+                else if((c*360)<240){g=b;bl=1;}
+                else if((c*360)<300){r=b;bl=1;}
+                else{r=1;bl=b;}
+                r= Math.floor(r*255),
+                g= Math.floor(g*255),
+                bl= Math.floor(bl*255)
+                buf32[y * width + x] = (255 << 24) | (r << 16) | (g << 8) | bl;
+            }
 
         }
     }
