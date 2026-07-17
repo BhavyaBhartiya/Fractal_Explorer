@@ -1,5 +1,6 @@
 var header = document.querySelector('h3')
 var canvas = document.querySelector('canvas')
+var dropdown = document.getElementById("cars");
 var ctx = canvas.getContext('2d')
 var height = Math.floor(((85 * window.innerHeight) / 100))
 var width = 0
@@ -304,4 +305,9 @@ window.addEventListener('mouseup', (e) => {
     dragging = false
 })
 window.addEventListener("resize", size_change);
+dropdown.addEventListener("change", function(event) {
+    const selectedValue = event.target.value;
+    theme=selectedValue
+    update()
+});
 update()
