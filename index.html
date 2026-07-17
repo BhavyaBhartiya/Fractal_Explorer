@@ -10,6 +10,8 @@
     body {
         background: black;
         color: white;
+        font-size:medium;
+        font-family:cursive;   
     }
 
     canvas {
@@ -18,7 +20,7 @@
 
     h3 {
         position: absolute;
-        top: 90px;
+        top: 60px;
         left: 35px;
     }
 
@@ -32,13 +34,20 @@
     canvas {
         position: absolute;
         margin: 0;
-        top: 60px;
+        top: 70px;
     }
 
     #input {
         position: absolute;
-        top: 150px;
+        top: 125px;
         left: 35px;
+    }
+
+    input{
+        font-family:cursive;
+        background:beige;
+        border-radius: 5px;
+        font-size:medium;
     }
 
     #Gen {
@@ -46,13 +55,14 @@
         color: cornsilk;
         background: slategray;
         border-radius: 15px;
+        font-family:cursive;   
         padding: 10px 15px 10px 15px;
     }
 
     #plus {
         position: absolute;
-        top: 340px;
-        left: 35px;
+        top: 330px;
+        left: 193px;
         font-size: 1.4em;
         color: cornsilk;
         background: slategray;
@@ -63,13 +73,25 @@
 
     #minus {
         position: absolute;
-        top: 340px;
-        left: 100px;
+        top: 330px;
+        left: 255px;
         font-size: 1.4em;
         color: cornsilk;
         background: slategray;
         border-radius: 12px;
         padding: 5px 10px 5px 10px;
+    }
+
+    #cars{
+        font-family:cursive;
+        background:beige;
+        border-radius: 5px;
+        font-size:medium;
+    }
+
+    label{
+        font-size:medium;
+        font-family:cursive;   
     }
 </style>
 
@@ -80,15 +102,22 @@
 
     <div id="input">
         <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <input type="text" id="RC" name="RealConstant" required><br><br>
+        <input type="text" id="RC" name="RC" required><br><br>
         <label for="IC">Imaginary C: </label>
-        <input type="text" id="IC" name="ImaginaryConstant" required><br><br>
-        <label for="MI">Iterations: &nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <input type="text" id="MI" name="MaxIterations" required><br><br>
+        <input type="text" id="IC" name="IC" required><br><br>
+        <label for="MI">Iterations: &nbsp;&nbsp;</label>
+        <input type="text" id="MI" name="MI" required><br><br>
+        <label for="cars" id="car">Theme: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <select name="cars" id="cars">
+            <option value="0">GREYSCALE</option>
+            <option value="1">AURORA</option>
+            <option value="2">FIRE</option>
+            <option value="3">PASTEL RAINBOW</option>
+        </select><br><br>
         <button type="button" id="Gen" onclick="generate()">Generate</button>
     </div>
 
-    <div id="zoom_button">
+    <div id="ZOOM">
         <button type="button" id="plus" onclick="zoomin()">+</button>
         <button type="button" id="minus" onclick="zoomout()">−</button>
     </div>

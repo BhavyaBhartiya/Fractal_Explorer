@@ -26,11 +26,11 @@ var buf32 = new Uint32Array(img.data.buffer)
 var dragging = false
 var lastMouseX = 0
 var lastMouseY = 0
-var theme = 2
+var theme = 0
 canvas.width = width
 canvas.height = height
 
-const UF_CLASSIC = [
+const AURORA = [
     [0, 0, 0],
     [0, 0, 96],
     [0, 32, 192],
@@ -48,7 +48,7 @@ const UF_CLASSIC = [
     [0, 0, 0]
 ]
 
-const XAOS_FIRE = [
+const FIRE = [
     [0, 0, 0],
     [32, 0, 0],
     [96, 0, 0],
@@ -179,13 +179,13 @@ function draw() {
             else if (theme == 1) {
                 let nu = sescape(i, pr2, pi2)
                 let paletteT = nu * 0.035
-                let [r, g, b] = palettesample(paletteT, UF_CLASSIC)
+                let [r, g, b] = palettesample(paletteT, AURORA)
                 buf32[y * width + x] = RGBA(r, g, b)
             }
             else if(theme == 2){
                 let nu = sescape(i, pr2, pi2)
                 let paletteT = nu*0.055
-                let [r,g,b] = palettesample(paletteT, XAOS_FIRE)
+                let [r,g,b] = palettesample(paletteT, FIRE)
                 buf32[y*width+x] = RGBA(r, g, b)
             }
             else if(theme == 3){
