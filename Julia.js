@@ -1,10 +1,10 @@
 var header = document.querySelector('h3')
 var canvas = document.querySelector('canvas')
 var ctx = canvas.getContext('2d')
-var height = Math.floor(((85*window.innerHeight)/100))
+var height = Math.floor(((85 * window.innerHeight) / 100))
 var width = 0
 for (let h = 100; true; h -= 5) {
-    width = Math.floor(((h*window.innerWidth)/100))
+    width = Math.floor(((h * window.innerWidth) / 100))
     if (width <= (height + 50)) {
         break;
     }
@@ -26,9 +26,27 @@ var buf32 = new Uint32Array(img.data.buffer)
 var dragging = false
 var lastMouseX = 0
 var lastMouseY = 0
-var theme = 2
+var theme = 1
 canvas.width = width
 canvas.height = height
+
+const UF_CLASSIC = [
+    [0, 0, 0],
+    [0, 0, 96],
+    [0, 32, 192],
+    [64, 0, 255],
+    [160, 0, 255],
+    [255, 0, 255],
+    [255, 96, 192],
+    [255, 160, 0],
+    [255, 224, 0],
+    [128, 255, 0],
+    [0, 255, 96],
+    [0, 255, 255],
+    [0, 128, 255],
+    [0, 0, 128],
+    [0, 0, 0]
+]
 
 function zoomin() {
     zoom *= 2
@@ -38,6 +56,33 @@ function zoomin() {
 function zoomout() {
     zoom /= 2
     update()
+}
+
+function sescape(i, pr2, pi2) {
+    let mag = Math.sqrt(pr2 + pi2)
+    return i + 1 - Math.log(Math.log(mag)) / Math.LN2
+}
+
+function lerp(a, b, t) {
+    return a + (b - a) * t
+}
+
+function palettesample(t, palette) {
+    t = ((t % 1) + 1) % 1
+    let n = palette.length
+    let x = t * n
+    let idx = Math.floor(x)
+    let f = x - idx
+    let c0 = palette[idx]
+    let c1 = palette[(idx + 1) % palette.length]
+    return [
+        Math.round(lerp(c0[0], c1[0], f)),
+        Math.round(lerp(c0[1], c1[1], f)),
+        Math.round(lerp(c0[2], c1[2], f))]
+}
+
+function RGBA(r, g, b) {
+    return (255 << 24) | (b << 16) | (g << 8) | r
 }
 
 function draw() {
@@ -69,22 +114,18 @@ function draw() {
                 i++
             }
 
-            let ms = i+1-Math.log2(Math.log2(Math.sqrt(pi2+pr2)))
-            let c = ms/mi
-
-            if(theme == 0){
-                let grey = i*255/mi
+            if (theme == 0) {
+                let grey = i * 255 / mi
                 buf32[y * width + x] = (255 << 24) | (grey << 16) | (grey << 8) | grey;
             }
-            else if(i==mi){
-                buf32[y*width+x] = 0xFF000000
+            else if (i == mi) {
+                buf32[y * width + x] = 0xFF000010
             }
-            else if(theme == 1){
-                let t = ms * 0.04;
-                let r = Math.floor(128 + 127*Math.cos(t));
-                let g = Math.floor(128 + 127*Math.cos(t + 2.094));
-                let b = Math.floor(128 + 127*Math.cos(t + 4.188));
-                buf32[y * width + x] = (0xFF000000) | (b << 16) | (g << 8) | r;
+            else if (theme == 1) {
+                let nu = sescape(i, pr2, pi2)
+                let paletteT = nu * 0.035
+                let [r, g, b] = palettesample(paletteT, UF_CLASSIC)
+                buf32[y * width + x] = RGBA(r, g, b)
             }
         }
     }
@@ -101,9 +142,9 @@ function update() {
 }
 
 function size_change() {
-    height = Math.floor(((85*window.innerHeight)/100))
+    height = Math.floor(((85 * window.innerHeight) / 100))
     for (let h = 100; true; h -= 5) {
-        width = Math.floor(((h*window.innerWidth)/100))
+        width = Math.floor(((h * window.innerWidth) / 100))
         if (width <= (height + 50)) {
             break;
         }
@@ -158,7 +199,7 @@ function move(event) {
         update();
         return;
     }
-    
+
     if (clicked) {
         return
     }
