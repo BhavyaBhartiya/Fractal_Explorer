@@ -26,7 +26,7 @@ var buf32 = new Uint32Array(img.data.buffer)
 var dragging = false
 var lastMouseX = 0
 var lastMouseY = 0
-var theme = 1
+var theme = 2
 canvas.width = width
 canvas.height = height
 
@@ -47,6 +47,18 @@ const UF_CLASSIC = [
     [0, 0, 128],
     [0, 0, 0]
 ]
+
+const XAOS_FIRE = [
+    [0, 0, 0],
+    [32, 0, 0],
+    [96, 0, 0],
+    [160, 16, 0],
+    [224, 48, 0],
+    [255, 96, 0],
+    [255, 160, 0],
+    [255, 224, 64],
+    [255, 255, 255]
+];
 
 function zoomin() {
     zoom *= 2
@@ -83,6 +95,49 @@ function palettesample(t, palette) {
 
 function RGBA(r, g, b) {
     return (255 << 24) | (b << 16) | (g << 8) | r
+}
+
+function hsvrgb(h, s, v){
+    h = ((h%1)+1)%1
+    let i = Math.floor(h*6)
+    let f = h*6-i
+    let p = v*(1-s)
+    let q = v*(1-f*s)
+    let t = v*(1-(1-f)*s)
+
+    let r,g,b;
+    switch(i%6){
+        case 0: r = v
+                g = t
+                b = p
+            break
+        case 1: r = q
+                g = v
+                b = p
+            break
+        case 2: r = p
+                g = v
+                b = t
+            break
+        case 3: r = p
+                g = q
+                b = v
+            break
+        case 4: r = t
+                g = p
+                b = v
+            break
+        case 5: r = v
+                g = p
+                b = q
+            break
+
+    }
+    return [
+        Math.round(r*255),
+        Math.round(g*255),
+        Math.round(b*255)
+    ]
 }
 
 function draw() {
@@ -126,6 +181,18 @@ function draw() {
                 let paletteT = nu * 0.035
                 let [r, g, b] = palettesample(paletteT, UF_CLASSIC)
                 buf32[y * width + x] = RGBA(r, g, b)
+            }
+            else if(theme == 2){
+                let nu = sescape(i, pr2, pi2)
+                let paletteT = nu*0.055
+                let [r,g,b] = palettesample(paletteT, XAOS_FIRE)
+                buf32[y*width+x] = RGBA(r, g, b)
+            }
+            else if(theme == 3){
+                let nu = sescape(i, pr2, pi2)
+                let h = nu*0.085
+                let [r, g, b] = hsvrgb(h ,1, 1)
+                buf32[y*width+x] = RGBA(r, g, b)
             }
         }
     }
