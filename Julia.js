@@ -28,6 +28,14 @@ var dragging = false
 var lastMouseX = 0
 var lastMouseY = 0
 var theme = 0
+
+const THREADS = Math.max(1, (navigator.hardwareConcurrency || 4)-1)
+const CHUNK_HEIGHT = 64
+
+let workers = []
+let pendingjobs = []
+let jobsremaining = 0
+
 var xcoords = new Float64Array(width)
 var ycoords = new Float64Array(height)
 canvas.width = width
@@ -74,8 +82,7 @@ function zoomout() {
 }
 
 function sescape(i, pr2, pi2) {
-    let mag = Math.sqrt(pr2 + pi2)
-    return i + 1 - Math.log(Math.log(mag)) / Math.LN2
+    return i + 1 - Math.log(Math.log(pr2 + pi2)*0.5) / Math.LN2
 }
 
 function lerp(a, b, t) {
@@ -160,62 +167,67 @@ function buildcoordtable(){
     }
 }
 
-function draw() {
-
-    const cr = constant_real
-    const ci = constant_imaginary
-    const mi = maxIterations
-
-    for(let y =0; y<height;y++){
+function schedulejobs(){
+    for(const worker of workers){
         
-        let pointImag = ycoords[y];
+        if(worker.busy)
+            continue
+        
+        if(pendingjobs.length == 0)
+            return
+        
+        const job = pendingjobs.shift()
 
-        for(let x = 0; x<width;x++){
+        worker.busy = true
 
-            let point_real = xcoords[x]
-            let point_imaginary = pointImag;
-            let i = 0;
-            let pr2 = point_real * point_real
-            let pi2 = point_imaginary * point_imaginary
-            while (((pr2 + pi2) < 4) && (i < mi)) {
-                let temp = (pr2 - pi2) + cr
-                point_imaginary = (2 * point_real * point_imaginary) + ci
-                point_real = temp
-                pr2 = point_real * point_real
-                pi2 = point_imaginary * point_imaginary
-                i++
+        worker.postMessage(job)
+    }
+}
+
+function createWorkers(){
+    for(let i = 0; i < THREADS; i++){
+        const worker = new Worker(Juliaworker.js)
+        worker.busy = false
+
+        worker.onmessage = function (e) {
+            const result = e.data
+
+            buf32.set{
+                new Uint32Array(result.buffer),
+                result.startY*width
             }
 
-            if (theme == 0) {
-                let grey = i * 255 / mi
-                buf32[y * width + x] = (255 << 24) | (grey << 16) | (grey << 8) | grey;
-            }
-            else if (i == mi) {
-                buf32[y * width + x] = 0xFF000010
-            }
-            else if (theme == 1) {
-                let nu = sescape(i, pr2, pi2)
-                let paletteT = nu * 0.035
-                let [r, g, b] = palettesample(paletteT, AURORA)
-                buf32[y * width + x] = RGBA(r, g, b)
-            }
-            else if(theme == 2){
-                let nu = sescape(i, pr2, pi2)
-                let paletteT = nu*0.055
-                let [r,g,b] = palettesample(paletteT, FIRE)
-                buf32[y*width+x] = RGBA(r, g, b)
-            }
-            else if(theme == 3){
-                let nu = sescape(i, pr2, pi2)
-                let h = nu*0.085
-                let [r, g, b] = hsvrgb(h ,1, 1)
-                buf32[y*width+x] = RGBA(r, g, b)
+            worker.busy = false
+            jobsremaining--
+
+            schedulejobs()
+
+            if(jobsremaining == 0){
+                ctx.putImageData(img, 0, 0)
             }
         }
+
+        workers.push(worker)
     }
+}
 
-    ctx.putImageData(img, 0, 0)
+function draw() {
+    pendingjobs.length = 0
 
+    for(let startY = 0; startY < height; startY += CHUNK_HEIGHT){
+        pendingjobs.push({
+            startY,
+            endY: Math.min(startY + CHUNK_HEIGHT, height),
+            width,
+            height,
+            xcoords,
+            ycoords,
+            constant_real,
+            constant_imaginary,
+            maxIterations,
+            theme
+        })
+    }
 }
 
 function update() {
@@ -327,4 +339,5 @@ dropdown.addEventListener("change", function(event) {
     theme=selectedValue
     update()
 });
+createWorkers()
 update()
