@@ -41,36 +41,6 @@ var ycoords = new Float64Array(height)
 canvas.width = width
 canvas.height = height
 
-const AURORA = [
-    [0, 0, 0],
-    [0, 0, 96],
-    [0, 32, 192],
-    [64, 0, 255],
-    [160, 0, 255],
-    [255, 0, 255],
-    [255, 96, 192],
-    [255, 160, 0],
-    [255, 224, 0],
-    [128, 255, 0],
-    [0, 255, 96],
-    [0, 255, 255],
-    [0, 128, 255],
-    [0, 0, 128],
-    [0, 0, 0]
-]
-
-const FIRE = [
-    [0, 0, 0],
-    [32, 0, 0],
-    [96, 0, 0],
-    [160, 16, 0],
-    [224, 48, 0],
-    [255, 96, 0],
-    [255, 160, 0],
-    [255, 224, 64],
-    [255, 255, 255]
-];
-
 function zoomin() {
     zoom *= 2
     update()
@@ -79,75 +49,6 @@ function zoomin() {
 function zoomout() {
     zoom /= 2
     update()
-}
-
-function sescape(i, pr2, pi2) {
-    return i + 1 - Math.log(Math.log(pr2 + pi2)*0.5) / Math.LN2
-}
-
-function lerp(a, b, t) {
-    return a + (b - a) * t
-}
-
-function palettesample(t, palette) {
-    t = ((t % 1) + 1) % 1
-    let n = palette.length
-    let x = t * n
-    let idx = Math.floor(x)
-    let f = x - idx
-    let c0 = palette[idx]
-    let c1 = palette[(idx + 1) % palette.length]
-    return [
-        Math.round(lerp(c0[0], c1[0], f)),
-        Math.round(lerp(c0[1], c1[1], f)),
-        Math.round(lerp(c0[2], c1[2], f))]
-}
-
-function RGBA(r, g, b) {
-    return (255 << 24) | (b << 16) | (g << 8) | r
-}
-
-function hsvrgb(h, s, v){
-    h = ((h%1)+1)%1
-    let i = Math.floor(h*6)
-    let f = h*6-i
-    let p = v*(1-s)
-    let q = v*(1-f*s)
-    let t = v*(1-(1-f)*s)
-
-    let r,g,b;
-    switch(i%6){
-        case 0: r = v
-                g = t
-                b = p
-            break
-        case 1: r = q
-                g = v
-                b = p
-            break
-        case 2: r = p
-                g = v
-                b = t
-            break
-        case 3: r = p
-                g = q
-                b = v
-            break
-        case 4: r = t
-                g = p
-                b = v
-            break
-        case 5: r = v
-                g = p
-                b = q
-            break
-
-    }
-    return [
-        Math.round(r*255),
-        Math.round(g*255),
-        Math.round(b*255)
-    ]
 }
 
 function buildcoordtable(){
