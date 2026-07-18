@@ -1,3 +1,6 @@
+let xcoords
+let ycoords
+
 const AURORA = [
     [0, 0, 0],
     [0, 0, 96],
@@ -29,7 +32,7 @@ const FIRE = [
 ];
 
 function sescape(i, pr2, pi2) {
-    return i + 1 - Math.log(Math.log(pr2 + pi2)*0.5) / Math.LN2
+    return i + 1 - Math.log(Math.log(pr2 + pi2) * 0.5) / Math.LN2
 }
 
 function lerp(a, b, t) {
@@ -55,77 +58,85 @@ function RGBA(r, g, b) {
     return (255 << 24) | (b << 16) | (g << 8) | r
 }
 
-function hsvrgb(h, s, v){
-    h = ((h%1)+1)%1
-    let i = Math.floor(h*6)
-    let f = h*6-i
-    let p = v*(1-s)
-    let q = v*(1-f*s)
-    let t = v*(1-(1-f)*s)
+function hsvrgb(h, s, v) {
+    h = ((h % 1) + 1) % 1
+    let i = Math.floor(h * 6)
+    let f = h * 6 - i
+    let p = v * (1 - s)
+    let q = v * (1 - f * s)
+    let t = v * (1 - (1 - f) * s)
 
-    let r,g,b;
-    switch(i%6){
+    let r, g, b;
+    switch (i % 6) {
         case 0: r = v
-                g = t
-                b = p
+            g = t
+            b = p
             break
         case 1: r = q
-                g = v
-                b = p
+            g = v
+            b = p
             break
         case 2: r = p
-                g = v
-                b = t
+            g = v
+            b = t
             break
         case 3: r = p
-                g = q
-                b = v
+            g = q
+            b = v
             break
         case 4: r = t
-                g = p
-                b = v
+            g = p
+            b = v
             break
         case 5: r = v
-                g = p
-                b = q
+            g = p
+            b = q
             break
 
     }
     return [
-        Math.round(r*255),
-        Math.round(g*255),
-        Math.round(b*255)
+        Math.round(r * 255),
+        Math.round(g * 255),
+        Math.round(b * 255)
     ]
 }
-onmessage = function(e){
+onmessage = function (e) {
+
+    if (e.data.type === "coords") {
+        xcoords = e.data.xcoords
+        ycoords = e.data.ycoords
+        postMessage({
+            type: "coordsReady"
+        })
+        return
+    }
+
     const {
         startY,
         endY,
         width,
-        xcoords,
-        ycoords,
         constant_real,
         constant_imaginary,
         maxIterations,
         theme
     } = e.data
 
-    const output = new Uint32Array((endY-startY)*width)
+    const output = new Uint32Array((endY - startY) * width)
     let out = 0
-    for(let y =0; y<height;y++){
-        
+    for (let y = startY; y < endY; y++) {
+
         let pointImag = ycoords[y];
 
-        for(let x = 0; x<width;x++){
+        for (let x = 0; x < width; x++) {
 
             let point_real = xcoords[x]
             let point_imaginary = pointImag;
             let i = 0;
             let pr2 = point_real * point_real
             let pi2 = point_imaginary * point_imaginary
-            while (((pr2 + pi2) < 4) && (i < mi)) {
-                let temp = (pr2 - pi2) + cr
-                point_imaginary = (2 * point_real * point_imaginary) + ci
+            while (((pr2 + pi2) < 4) && (i < maxIterations)) {
+                let temp = (pr2 - pi2) + constant_real
+                point_imaginary = (2 * point_real * point_imaginary) + constant_imaginary
                 point_real = temp
                 pr2 = point_real * point_real
                 pi2 = point_imaginary * point_imaginary
@@ -133,10 +144,10 @@ onmessage = function(e){
             }
 
             if (theme == 0) {
-                let grey = i * 255 / mi
+                let grey = i * 255 / maxIterations
                 output[out++] = (255 << 24) | (grey << 16) | (grey << 8) | grey;
             }
-            else if (i == mi) {
+            else if (i == maxIterations) {
                 output[out++] = 0xFF000010
             }
             else if (theme == 1) {
@@ -145,16 +156,16 @@ onmessage = function(e){
                 let [r, g, b] = palettesample(paletteT, AURORA)
                 output[out++] = RGBA(r, g, b)
             }
-            else if(theme == 2){
+            else if (theme == 2) {
                 let nu = sescape(i, pr2, pi2)
-                let paletteT = nu*0.055
-                let [r,g,b] = palettesample(paletteT, FIRE)
+                let paletteT = nu * 0.055
+                let [r, g, b] = palettesample(paletteT, FIRE)
                 output[out++] = RGBA(r, g, b)
             }
-            else if(theme == 3){
+            else if (theme == 3) {
                 let nu = sescape(i, pr2, pi2)
-                let h = nu*0.085
-                let [r, g, b] = hsvrgb(h ,1, 1)
+                let h = nu * 0.085
+                let [r, g, b] = hsvrgb(h, 1, 1)
                 output[out++] = RGBA(r, g, b)
             }
         }
@@ -162,6 +173,6 @@ onmessage = function(e){
 
     postMessage({
         startY,
-        buffer:output.buffer
-    },[output.buffer]);
-};
+        buffer: output.buffer
+    }, [output.buffer]);
+}

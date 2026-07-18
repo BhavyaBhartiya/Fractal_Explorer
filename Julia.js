@@ -29,7 +29,7 @@ var lastMouseX = 0
 var lastMouseY = 0
 var theme = 0
 
-const THREADS = Math.max(1, (navigator.hardwareConcurrency || 4)-1)
+const THREADS = Math.max(1, (navigator.hardwareConcurrency || 4) - 1)
 const CHUNK_HEIGHT = 64
 
 let workers = []
@@ -51,32 +51,32 @@ function zoomout() {
     update()
 }
 
-function buildcoordtable(){
+function buildcoordtable() {
     xcoords = new Float64Array(width)
     ycoords = new Float64Array(height)
 
-    let invertedzoom = 1/zoom
-    let xstep = 2/(width*zoom)
-    let ystep = 2/(height*zoom)
+    let invertedzoom = 1 / zoom
+    let xstep = 2 / (width * zoom)
+    let ystep = 2 / (height * zoom)
 
-    for(let x = 0; x<width;x++){
-        xcoords[x] = pan_real + invertedzoom - x*xstep
+    for (let x = 0; x < width; x++) {
+        xcoords[x] = pan_real + invertedzoom - x * xstep
     }
 
-    for(let y = 0; y < height; y++){
-        ycoords[y] = pan_imaginary + invertedzoom - y*ystep
+    for (let y = 0; y < height; y++) {
+        ycoords[y] = pan_imaginary + invertedzoom - y * ystep
     }
 }
 
-function schedulejobs(){
-    for(const worker of workers){
-        
-        if(worker.busy)
+function schedulejobs() {
+    for (const worker of workers) {
+
+        if (worker.busy)
             continue
-        
-        if(pendingjobs.length == 0)
+
+        if (pendingjobs.length == 0)
             return
-        
+
         const job = pendingjobs.shift()
 
         worker.busy = true
@@ -85,25 +85,38 @@ function schedulejobs(){
     }
 }
 
-function createWorkers(){
-    for(let i = 0; i < THREADS; i++){
-        const worker = new Worker(Juliaworker.js)
+function createWorkers() {
+    for (let i = 0; i < THREADS; i++) {
+        const worker = new Worker("Juliaworker.js")
         worker.busy = false
 
         worker.onmessage = function (e) {
+
+            if(e.data.type === "coordsReady"){
+                worker.coordsReady = true
+                
+                if(workers.every(w => w.coordsReady)){
+                    for(const w of workers){
+                        w.coordsReady = false
+                    }
+                    draw()
+                }
+                return
+            }
+
             const result = e.data
 
-            buf32.set{
+            buf32.set(
                 new Uint32Array(result.buffer),
-                result.startY*width
-            }
+                    result.startY * width
+            )
 
             worker.busy = false
             jobsremaining--
 
             schedulejobs()
 
-            if(jobsremaining == 0){
+            if (jobsremaining == 0) {
                 ctx.putImageData(img, 0, 0)
             }
         }
@@ -115,27 +128,34 @@ function createWorkers(){
 function draw() {
     pendingjobs.length = 0
 
-    for(let startY = 0; startY < height; startY += CHUNK_HEIGHT){
+    for (let startY = 0; startY < height; startY += CHUNK_HEIGHT) {
         pendingjobs.push({
             startY,
             endY: Math.min(startY + CHUNK_HEIGHT, height),
             width,
             height,
-            xcoords,
-            ycoords,
             constant_real,
             constant_imaginary,
             maxIterations,
             theme
         })
     }
+
+    jobsremaining = pendingjobs.length
+    schedulejobs();
 }
 
 function update() {
 
     header.innerHTML = constant_real.toString() + ' + ' + constant_imaginary.toString() + 'i at ' + zoom + 'X'
     buildcoordtable()
-    draw()
+    for (const worker of workers) {
+        worker.postMessage({
+            type: "coords",
+            xcoords,
+            ycoords
+        })
+    }
 
 }
 
@@ -235,9 +255,9 @@ window.addEventListener('mouseup', (e) => {
     dragging = false
 })
 window.addEventListener("resize", size_change);
-dropdown.addEventListener("change", function(event) {
+dropdown.addEventListener("change", function (event) {
     const selectedValue = event.target.value;
-    theme=selectedValue
+    theme = selectedValue
     update()
 });
 createWorkers()
