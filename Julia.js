@@ -108,7 +108,7 @@ function createWorkers() {
 
             buf32.set(
                 new Uint32Array(result.buffer),
-                    result.startY * width
+                result.startY * width
             )
 
             worker.busy = false
@@ -133,7 +133,6 @@ function draw() {
             startY,
             endY: Math.min(startY + CHUNK_HEIGHT, height),
             width,
-            height,
             constant_real,
             constant_imaginary,
             maxIterations,
@@ -257,7 +256,7 @@ window.addEventListener('mouseup', (e) => {
 window.addEventListener("resize", size_change);
 dropdown.addEventListener("change", function (event) {
     const selectedValue = event.target.value;
-    theme = selectedValue
+    theme = Number(selectedValue)
     update()
 });
 createWorkers()
