@@ -61,6 +61,12 @@ const FIRE = [
     [255, 255, 255]
 ];
 
+const palette_size = 4096
+const auroratable = new Uint32Array(palette_size)
+const firetable = new Uint32Array(palette_size)
+const rainbowtable = new Uint32Array(palette_size)
+const defaulttable = new Uint32Array(palette_size)
+
 function zoomin() {
     zoom *= 2
     update()
@@ -98,47 +104,69 @@ function RGBA(r, g, b) {
     return (255 << 24) | (b << 16) | (g << 8) | r
 }
 
-function hsvrgb(h, s, v){
-    h = ((h%1)+1)%1
-    let i = Math.floor(h*6)
-    let f = h*6-i
-    let p = v*(1-s)
-    let q = v*(1-f*s)
-    let t = v*(1-(1-f)*s)
+function hsvrgb(h, s, v) {
+    h = ((h % 1) + 1) % 1
+    let i = Math.floor(h * 6)
+    let f = h * 6 - i
+    let p = v * (1 - s)
+    let q = v * (1 - f * s)
+    let t = v * (1 - (1 - f) * s)
 
-    let r,g,b;
-    switch(i%6){
+    let r, g, b;
+    switch (i % 6) {
         case 0: r = v
-                g = t
-                b = p
+            g = t
+            b = p
             break
         case 1: r = q
-                g = v
-                b = p
+            g = v
+            b = p
             break
         case 2: r = p
-                g = v
-                b = t
+            g = v
+            b = t
             break
         case 3: r = p
-                g = q
-                b = v
+            g = q
+            b = v
             break
         case 4: r = t
-                g = p
-                b = v
+            g = p
+            b = v
             break
         case 5: r = v
-                g = p
-                b = q
+            g = p
+            b = q
             break
 
     }
     return [
-        Math.round(r*255),
-        Math.round(g*255),
-        Math.round(b*255)
+        Math.round(r * 255),
+        Math.round(g * 255),
+        Math.round(b * 255)
     ]
+}
+
+function buildcolortable() {
+    for (let i = 0; i < palette_size; i++) {
+        let t = i / palette_size
+        {
+            let [r, g, b] = palettesample(t * 4, AURORA)
+            auroratable[i] = RGBA(r, g, b)
+        } 
+        {
+            let [r, g, b] = palettesample(t * 6, FIRE)
+            firetable[i] = RGBA(r, g, b)
+        } 
+        {
+            let [r, g, b] = hsvrgb(t * 8, 1, 1)
+            rainbowtable[i] = RGBA(r, g, b)
+        } 
+        {
+            let g = Math.round(t * 255)
+            defaulttable[i] = RGBA(g, g, g)
+        }
+    }
 }
 
 function draw() {
@@ -179,21 +207,19 @@ function draw() {
             }
             else if (theme == 1) {
                 let nu = sescape(i, pr2, pi2)
-                let paletteT = nu * 0.035
-                let [r, g, b] = palettesample(paletteT, AURORA)
+                let idx = ((nu*140) | 0) & (palette_size - 1)
+                buf32[y * width + x] = auroratable[idx]
+            }
+            else if (theme == 2) {
+                let nu = sescape(i, pr2, pi2)
+                let idx = ((nu*220) | 0) & (palette_size-1)
+                buf32[y * width + x] = firetable[idx]
+            }
+            else if (theme == 3) {
+                let nu = sescape(i, pr2, pi2)
+                let h = nu * 0.085
+                let [r, g, b] = hsvrgb(h, 1, 1)
                 buf32[y * width + x] = RGBA(r, g, b)
-            }
-            else if(theme == 2){
-                let nu = sescape(i, pr2, pi2)
-                let paletteT = nu*0.055
-                let [r,g,b] = palettesample(paletteT, FIRE)
-                buf32[y*width+x] = RGBA(r, g, b)
-            }
-            else if(theme == 3){
-                let nu = sescape(i, pr2, pi2)
-                let h = nu*0.085
-                let [r, g, b] = hsvrgb(h ,1, 1)
-                buf32[y*width+x] = RGBA(r, g, b)
             }
         }
     }
@@ -305,9 +331,10 @@ window.addEventListener('mouseup', (e) => {
     dragging = false
 })
 window.addEventListener("resize", size_change);
-dropdown.addEventListener("change", function(event) {
+dropdown.addEventListener("change", function (event) {
     const selectedValue = event.target.value;
-    theme=selectedValue
+    theme = selectedValue
     update()
 });
+buildcolortable()
 update()
