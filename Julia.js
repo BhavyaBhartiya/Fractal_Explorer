@@ -180,7 +180,7 @@ function generate() {
     clicked = true
     if (document.getElementById("MI").value !== null) {
         if (document.getElementById("MI").value.trim() !== "") {
-            maxIterations = parseFloat(document.getElementById("MI").value);
+            maxIterations = parseInt(document.getElementById("MI").value);
         }
     }
     if (document.getElementById("IC").value !== null) {
