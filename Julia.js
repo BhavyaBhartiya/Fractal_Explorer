@@ -253,6 +253,42 @@ canvas.addEventListener('mousedown', (e) => {
 window.addEventListener('mouseup', (e) => {
     dragging = false
 })
+window.addEventListener('keydown', (e) => {
+    if(e.key == 'Enter'){
+        generate()
+    }
+    else if(e.key == '='){
+        zoomin()
+    }
+    else if(e.key == '-'){
+        zoomout()
+    }
+    else if(e.key == 'w' || e.key == 'W'){
+        pan_imaginary += 5 * (2 / (height * zoom));
+        update();
+    }
+    else if(e.key == 's' || e.key == 'S'){
+        pan_imaginary += -5 * (2 / (height * zoom));
+        update();
+    }
+    else if(e.key == 'a' || e.key == 'A'){
+        pan_real += 5 * (2 / (height * zoom));
+        update();
+    }
+    else if(e.key == 'd' || e.key == 'D'){
+        pan_real += -5 * (2 / (height * zoom));
+        update();
+    }
+    else if(e.key == 'ArrowUp'){
+        constant_real+=0.01
+        update()
+    }
+    else if(e.key == 'ArrowDown'){
+        constant_real-=0.01
+        update()
+    }
+
+})
 window.addEventListener("resize", size_change);
 dropdown.addEventListener("change", function (event) {
     const selectedValue = event.target.value;
