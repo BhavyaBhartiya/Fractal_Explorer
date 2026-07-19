@@ -6,7 +6,7 @@ This is a Julia fractal explorer created entirely with HTML, CSS, and JavaScript
 I built it to view fractals without the slow calculations that were used by common fractal viewing websites such as:https://fractalfoundation.org/resources/.
 
 ![image](./assets/Fractal_Explorer.png)
-![image](./assets/Fractal_Explorer_2.png)
+![image](./assets/Fractal_Explorer2.png)
 
 ## Published Website link :- [Fractal Explorer](https://bhavyabhartiya.github.io/Fractal_Explorer/).
 
