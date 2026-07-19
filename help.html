@@ -7,139 +7,369 @@
     <title>Julia Fractals</title>
 </head>
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     body {
-        background: rgb(0, 15, 46);
+        background: linear-gradient(180deg, #06111f, #081d35 60%, #06111f);
         color: white;
-        font-size: medium;
-        font-family: cursive;
+        font-family: "Segoe UI", Arial, sans-serif;
+        line-height: 1.6;
     }
 
-    .help-box {
-        background: rgb(0, 15, 46);
+    .container {
+        width: min(1400px, 95%);
+        margin: auto;
+        padding: 40px 0 70px;
     }
 
-    #H-HC {
-        position: absolute;
-        top: 60px;
-        left: 50%;
-        transform: translateX(-50%);
+    header {
+        text-align: center;
+        margin-bottom: 50px;
     }
 
-    #H-HP {
-        position: absolute;
-        top: 120px;
-        left: 10px;
+    header h1 {
+        font-size: 3.2rem;
+        letter-spacing: 4px;
+        color: #ffffff;
     }
 
-    #H-CP {
-        position: absolute;
-        top: 165px;
-        left: 10px;
+    header p {
+        color: #9ecfff;
+        font-size: 1.2rem;
+        margin-top: 10px;
     }
 
-    #H-HCC {
-        position: absolute;
-        top: 120px;
-        left: 440px;
+    .section-title {
+        font-size: 2rem;
+        margin: 50px 0 25px;
+        padding-left: 15px;
+        border-left: 6px solid #3ca7ff;
+        color: #78c7ff;
     }
 
-    #H-CCC {
-        position: absolute;
-        top: 165px;
-        left: 440px;
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 25px;
     }
 
-    #H-HZ {
-        position: absolute;
-        top: 120px;
-        left: 925px;
+    .card {
+        background: #0f2442;
+        border: 1px solid #2f6bb2;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 12px 25 px rgba(0, 0, 0, 0.35);
+        transition: 0.25s;
     }
 
-    #H-CZ {
-        position: absolute;
-        top: 165px;
-        left: 925px;
+    .card:hover {
+        transform: translateY(-6px);
+        border-color: #56b8ff;
     }
 
-    #H-HM{
-        position: absolute;
-        top: 465px;
-        left: 50%;
-        transform: translateX(-50%);
+    .card h3 {
+        margin-bottom: 18px;
+        color: #7dd0ff;
+        font-size: 1.4rem;
     }
 
-    #H-MP{
-        position: absolute;
-        top: 165px;
-        left: 10px;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        vertical-align: top;
+    }
+
+    td:first-child {
+        width: 45%;
+        font-weight: bold;
+    }
+
+    kbd {
+        display: inline-block;
+        min-width: 28px;
+        padding: 4px 8px;
+        margin: 2px;
+        text-align: center;
+        background: #09131d;
+        border: 1px solid #4ea8ff;
+        border-radius: 6px;
+        font-family: Consolas, monospace;
+        font-size: 0.95rem;
+        box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    @media(max-width:700px) {
+        header h1 {
+            font-size: 2.3rem;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+        }
     }
 </style>
 
 <body>
-    <div class="help-box">
-        <center>
-            <h1 id="H-H">HELP</h1>
-        </center>
-        <h2 id="H-HC">Keyboard Controls</h2>
-        <h3 id="H-HP">1. Pan : </h3>
-        <h4 id="H-CP">·W / w - Move up by roughly 20 points<br>
-            ·S / S - Move down by roughly 20 points<br>
-            ·A / a - Move left by roughly 20 points<br>
-            ·d - Move right by roughly 20 points<br>
-            ·Shift W / w - Move up by roughly 10 points<br>
-            ·Shift S / S - Move down by roughly 10 points<br>
-            ·Shift A / a - Move left by roughly 10 points<br>
-            ·Shift D / d - Move right by roughly 10 points<br>
-            ·Alt W / w - Move up by roughly 5 points<br>
-            ·Alt S / S - Move down by roughly 5 points<br>
-            ·Alt A / a - Move left by roughly 5 points<br>
-            ·D - Move right by roughly 5 points
-        </h4>
-        <h3 id="H-HCC">2. Changing Constant : </h3>
-        <h4 id="H-CCC">· ↑ - Increase Imaginary Part of Constant by 0.01<br>
-            · ↓ - Decrease Imaginary Part of Constant by 0.01<br>
-            · → - Increase Real Part of Constant by 0.01<br>
-            · ← - Decrease Real Part of Constant by 0.01<br>
-            · Shift ↑ - Increase Imaginary Part of Constant by 0.001<br>
-            · Shift ↓ - Decrease Imaginary Part of Constant by 0.001<br>
-            · Shift → - Increase Real Part of Constant by 0.001<br>
-            · Shift ← - Decrease Real Part of Constant by 0.001<br>
-            · Ctrl ↑ - Increase Imaginary Part of Constant by 0.0001<br>
-            · Ctrl ↓ - Decrease Imaginary Part of Constant by 0.0001<br>
-            · Ctrl → - Increase Real Part of Constant by 0.0001<br>
-            · Ctrl ← - Decrease Real Part of Constant by 0.0001
-        </h4>
-        <h3 id="H-HZ">3. Zoom : </h3>
-        <h4 id="H-CZ">· = / + - Double the zoom<br>
-            · − - half the zoom
-        </h4>
-        <h2 id="H-HM">Mouse Controls</h2>
-        <div id="H-MP">
-            <h3>1. Pan : </h3>
-            <h4>Drag the mouse around to pan</h4>
+    <div class="container">
+
+        <header>
+
+            <h1>FRACTAL VIEWER</h1>
+            <p>Help Page</p>
+
+        </header>
+
+        <h2 class="section-title">Keyboard Controls</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Pan</h3>
+
+                <table>
+
+                    <tr>
+                        <td><kbd>W</kbd>/<kbd>w</kbd></td>
+                        <td>Move Up by 20 points</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>S</kbd>/<kbd>s</kbd></td>
+                        <td>Move Down by 20 points</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>A</kbd>/<kbd>a</kbd></td>
+                        <td>Move Left by 20 points</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>d</kbd></td>
+                        <td>Move Right by 20 points</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Shift</kbd> + WASD</td>
+                        <td>Move by 10 points</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Alt</kbd> + WAS</td>
+                        <td>Move by 5 points</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>D</kbd></td>
+                        <td>Move right by 5 points</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Changing the Constant</h3>
+
+                <table>
+
+                    <tr>
+                        <td><kbd>↑</kbd></td>
+                        <td>Imaginary Part + 0.01</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>↓</kbd></td>
+                        <td>Imaginary Part - 0.01</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>→</kbd></td>
+                        <td>Real Part + 0.01</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>←</kbd></td>
+                        <td>Real Part - 0.01</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Shift</kbd> + ↑↓→←</td>
+                        <td>Adjust by 0.001</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Ctrl</kbd> + ↑↓→←</td>
+                        <td>Adjust by 0.0001</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Zoom</h3>
+
+                <table>
+
+                    <tr>
+                        <td><kbd>+</kbd> / <kbd>=</kbd></td>
+                        <td>Double the zoom</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>-</kbd></td>
+                        <td>Halve the zoom</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
         </div>
-        <div id="H-MC">
-            <h3>2. Changing the constant : </h3>
-            <h4>Before clicking generate you can view the julia sets at different consatnts by moving the pointer around
-                in the canvas to change the constant</h4>
+
+        <h2 class="section-title">Mouse Controls</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Pan</h3>
+
+                <p>
+                    Click and drag anywhere on the fractal to move around your view.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Changing the Constant</h3>
+
+                <p>
+                    Before pressing <b>Generate</b>, move the mouse across the canvas to change the constant and the
+                    Julia Set
+                </p>
+
+            </div>
+
         </div>
-        <h2 id="H-HI">Inputs in the Form</h2>
-        <h3>1. Real Constant Field</h3><img src="FRC.png">
-        <h4>In this field you can input the real part of the constant upto 4 decimals. More than that will lead to it
-            being rounded off. If it is left blank then it will hava a default value of +0.28.</h4>
-        <h3>2. Imaginary Constant Field</h3><img src="FIC.png">
-        <h4>In this field you can input the imaginary part of the constant upto 4 decimals. More than that will lead to
-            it being rounded off. If it is left blank then it will hava a default value of +0.01.</h4>
-        <h3>3. Maximum Iterations Field</h3><img src="FI.png">
-        <h4>In this field you can input the maximum number of iterations to be performed. It should be an integer. If no
-            value is entered then it is taken to be 256.</h4>
-        <h3>4. Maximum Iterations Field</h3><img src="FT.png">
-        <h4>Using the drop down menu you can select one of the 4 colouring chemes for the julia set. For higher
-            iterations it is not recommended to use the GREYSCALE them as it won't display anything due the colours
-            being dim and merging into the black background of the canvas.</h4>
-        <h3>5. Generate Button</h3><img src="FGS.png">
-        <h4>Click this button to generate the julia set for the values that were filled in the form fields</h4>
-        <h3>5. Zoom Buttons</h3><img src="PM.png">
-        <h4>Click the plus or minus button to zoom in or zoom out respectively</h4>
+
+        <h2 class="section-tile">Input Fields</h2>
+
+        <div class="card">
+
+            <div class="input-card">
+
+                <img src="FRC.png" alt="Real Constant">
+
+                <div>
+
+                    <h3>1. Real Constant</h3>
+
+                    <p>
+                        Enter the real part of the constant. If left blank then the default value will be <b>0.28</b>.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="input-card">
+
+                <img src="FIC.png" alt="Imaginary Constant">
+
+                <div>
+
+                    <h3>2. Imaginary Constant</h3>
+
+                    <p>
+                        Enter the imaginary part of the constant. If left blank, the default value will be <b>0.01</b>.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="input-card">
+
+                <img src="FI.png" alt="Iterations">
+
+                <div>
+
+                    <h3>3. Maximum Iterations</h3>
+
+                    <p>
+                        Enter the maximum number of iterations to be used while generating the Julia set. This value
+                        must be
+                        an integer. If left blank, the default value is <b>256</b>.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="input-card">
+
+                <img src="FT.png" alt="Colour Theme">
+
+                <div>
+
+                    <h3>4. Colour Theme</h3>
+
+                    <p>
+                        Select one of the four colour themes for Julia set. For high values of maximum iteration the
+                        Greyscale theme is not recommended because it becomes very dim and difficult to distinguish from
+                        the black background.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="input-card">
+
+                <img src="FGS.png" alt="Generate">
+
+                <div>
+
+                    <h3>5. Generate Button</h3>
+
+                    <p>
+                        Click <b>Generate</b> to create a Julia set using the values entered in the form.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="input-card">
+
+                <img src="PM.png" alt="Zoom">
+
+                <div>
+
+                    <h3>6. Zoom Buttons</h3>
+
+                    <p>
+                        Use the plus and minus buttons to zoom in or out of the fractal.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+    
 </body>
