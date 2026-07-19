@@ -92,11 +92,11 @@ function createWorkers() {
 
         worker.onmessage = function (e) {
 
-            if(e.data.type === "coordsReady"){
+            if (e.data.type === "coordsReady") {
                 worker.coordsReady = true
-                
-                if(workers.every(w => w.coordsReady)){
-                    for(const w of workers){
+
+                if (workers.every(w => w.coordsReady)) {
+                    for (const w of workers) {
                         w.coordsReady = false
                     }
                     draw()
@@ -228,8 +228,8 @@ function move(event) {
     constant_imaginary = 1 - ((mouseY / height) * 2)
     constant_real = (constant_real / zoom) + pan_real
     constant_imaginary = (constant_imaginary / zoom) + pan_imaginary
-    constant_real = Math.round(constant_real * 1000) / 1000
-    constant_imaginary = Math.round(constant_imaginary * 1000) / 1000
+    constant_real = Math.round(constant_real * 10000) / 10000
+    constant_imaginary = Math.round(constant_imaginary * 10000) / 10000
 
     update()
 
@@ -254,37 +254,89 @@ window.addEventListener('mouseup', (e) => {
     dragging = false
 })
 window.addEventListener('keydown', (e) => {
-    if(e.key == 'Enter'){
+    if (e.key == 'Enter') {
         generate()
     }
-    else if(e.key == '='){
+    else if (e.key == '=') {
         zoomin()
     }
-    else if(e.key == '-'){
+    else if (e.key == '-') {
         zoomout()
     }
-    else if(e.key == 'w' || e.key == 'W'){
+    else if (e.key == 'w' || e.key == 'W') {
         pan_imaginary += 5 * (2 / (height * zoom));
         update();
     }
-    else if(e.key == 's' || e.key == 'S'){
+    else if (e.key == 's' || e.key == 'S') {
         pan_imaginary += -5 * (2 / (height * zoom));
         update();
     }
-    else if(e.key == 'a' || e.key == 'A'){
+    else if (e.key == 'a' || e.key == 'A') {
         pan_real += 5 * (2 / (height * zoom));
         update();
     }
-    else if(e.key == 'd' || e.key == 'D'){
+    else if (e.key == 'd' || e.key == 'D') {
         pan_real += -5 * (2 / (height * zoom));
         update();
     }
-    else if(e.key == 'ArrowUp'){
-        constant_real+=0.01
+    else if (e.ctrlKey && e.key == 'ArrowRight') {
+        constant_real += 0.0001
+        constant_real = Math.round(constant_real * 10000) / 10000
         update()
     }
-    else if(e.key == 'ArrowDown'){
-        constant_real-=0.01
+    else if (e.shiftKey && e.key == 'ArrowRight') {
+        constant_real += 0.001
+        constant_real = Math.round(constant_real * 1000) / 1000
+        update()
+    }
+    else if (e.key == 'ArrowRight') {
+        constant_real += 0.01
+        constant_real = Math.round(constant_real * 1000) / 1000
+        update()
+    }
+    else if (e.ctrlKey && e.key == 'Arrowleft') {
+        constant_real -= 0.0001
+        constant_real = Math.round(constant_real * 10000) / 10000
+        update()
+    }
+    else if (e.shiftKey && e.key == 'ArrowLeft') {
+        constant_real -= 0.001
+        constant_real = Math.round(constant_real * 10000) / 10000
+        update()
+    }
+    else if (e.key == 'ArrowLeft') {
+        constant_real -= 0.01
+        constant_real = Math.round(constant_real * 10000) / 10000
+        update()
+    }
+    else if (e.ctrlKey && e.key == 'ArrowUp') {
+        constant_imaginary += 0.0001
+        constant_imaginary = Math.round(constant_imaginary * 10000) / 10000
+        update()
+    }
+    else if (e.shiftKey && e.key == 'ArrowUp') {
+        constant_imaginary += 0.001
+        constant_imaginary = Math.round(constant_imaginary * 10000) / 10000
+        update()
+    }
+    else if (e.key == 'ArrowUp') {
+        constant_imaginary += 0.01
+        constant_imaginary = Math.round(constant_imaginary * 10000) / 10000
+        update()
+    }
+    else if (e.ctrlKey && e.key == 'ArrowDown') {
+        constant_imaginary -= 0.0001
+        constant_imaginary = Math.round(constant_imaginary * 10000) / 10000
+        update()
+    }
+    else if (e.shiftKey && e.key == 'ArrowDown') {
+        constant_imaginary -= 0.001
+        constant_imaginary = Math.round(constant_imaginary * 10000) / 10000
+        update()
+    }
+    else if (e.key == 'ArrowDown') {
+        constant_imaginary -= 0.01
+        constant_imaginary = Math.round(constant_imaginary * 10000) / 10000
         update()
     }
 
