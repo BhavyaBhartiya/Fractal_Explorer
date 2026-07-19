@@ -84,7 +84,7 @@
 
     td {
         padding: 8px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         vertical-align: top;
     }
 
@@ -104,7 +104,50 @@
         border-radius: 6px;
         font-family: Consolas, monospace;
         font-size: 0.95rem;
-        box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.8);
+        box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .input-card {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 25px;
+        align-items: center;
+        padding: 25px 0;
+    }
+
+    .input-card img {
+        width: 170px;
+        border-radius: 12px;
+        border: 2px solid #2d6cb5;
+        background: #081321;
+        padding: 6px;
+    }
+
+    .input-card h3 {
+        color: #79d0ff;
+        margin-bottom: 10px;
+    }
+
+    .input-card p {
+        color: #d8e7ff;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media(max-width:800px) {
+        .input-card {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .input-card img {
+            width: 100%;
+            max-width: 260px;
+            margin: auto;
+        }
     }
 
     @media(max-width:700px) {
@@ -254,7 +297,7 @@
 
         </div>
 
-        <h2 class="section-tile">Input Fields</h2>
+        <h2 class="section-title">Input Fields</h2>
 
         <div class="card">
 
@@ -371,5 +414,5 @@
         </div>
 
     </div>
-    
+
 </body>
