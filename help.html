@@ -60,6 +60,19 @@
         top: 165px;
         left: 925px;
     }
+
+    #H-HM{
+        position: absolute;
+        top: 465px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #H-MP{
+        position: absolute;
+        top: 165px;
+        left: 10px;
+    }
 </style>
 
 <body>
@@ -101,11 +114,15 @@
             · − - half the zoom
         </h4>
         <h2 id="H-HM">Mouse Controls</h2>
-        <h3 id="H-MP">1. Pan : </h3>
-        <h4>Drag the mouse around to pan</h4>
-        <h3 id="H-CP">2. Changing the constant : </h3>
-        <h4>Before clicking generate you can view the julia sets at different consatnts by moving the pointer around in
-            the canvas to change the constant</h4>
+        <div id="H-MP">
+            <h3>1. Pan : </h3>
+            <h4>Drag the mouse around to pan</h4>
+        </div>
+        <div id="H-MC">
+            <h3>2. Changing the constant : </h3>
+            <h4>Before clicking generate you can view the julia sets at different consatnts by moving the pointer around
+                in the canvas to change the constant</h4>
+        </div>
         <h2 id="H-HI">Inputs in the Form</h2>
         <h3>1. Real Constant Field</h3><img src="FRC.png">
         <h4>In this field you can input the real part of the constant upto 4 decimals. More than that will lead to it
