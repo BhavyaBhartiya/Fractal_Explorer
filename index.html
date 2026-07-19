@@ -23,13 +23,20 @@
     #input {
         position: absolute;
         left: 20px;
-        top: 20px;
-        width: 350px;
-        padding: 28px;
-        border-radius: 22px;
+        top: 10px;
+        width: 330px;
+        height: calc(100vh - 30px);
+        max-height: min-content;
+        margin-top: calc((100vh - 550px)/2);
+        padding: 20px;
+        padding-top: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        border-radius: 20px;
         background: rgba(12, 29, 52, 0.96);
-        border: 1px solid rgba(90, 175, 255, 0.3);
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45), inset 0 1px rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(90, 175, 255, 0.28);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
     }
@@ -37,30 +44,20 @@
     #Heading {
         margin: 0;
         text-align: center;
-        font-size: 2.15rem;
+        font-size: 1.6rem;
         font-weight: 700;
         letter-spacing: 2px;
         color: white;
         text-shadow: 0 0 16px rgba(70, 170, 255, 0.3);
     }
 
-    .subtitle {
-        text-align: center;
-        color: #8fd2ff;
-        margin-top: 6px;
-        margin-bottom: 22px;
-        font-size: 0.95rem;
-    }
-
     #Location {
         width: 100%;
-        padding: 14px;
-        margin-bottom: 28px;
         background: linear-gradient(180deg, rgba(32, 63, 99, 0.95), rgba(20, 42, 69, 0.95));
         border: 1px solid rgba(90, 170, 255, 0.3);
         border-radius: 14px;
         color: #ccecff;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -68,34 +65,16 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        min-height: 62px;
+        min-height: 33px;
         white-space: normal;
         overflow-wrap: anywhere;
-        line-height: 1.4;
         font-weight: 500;
         letter-spacing: 0.2px;
     }
 
-    .section {
-        margin-bottom: 20px;
-        position: relative;
-        padding-bottom: 18px;
-    }
-
-    .section:not(:last-of-type)::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.2), transparent);
-    }
-
     label {
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         color: #d8ebff;
         font-weight: 600;
         font-size: 0.95rem;
@@ -103,12 +82,13 @@
 
     input {
         width: 100%;
-        padding: 12px 14px;
+        padding:8px 12px;
         padding-left: 16px;
         border-radius: 12px;
         border: 1px solid #396ea8;
         background: #081522;
         color: white;
+        height:35px;
         font-size: 15px;
         transition: 0.2s;
     }
@@ -130,8 +110,9 @@
 
     #cars {
         width: 100%;
-        padding: 12px 14px;
+        padding:8px 12px;
         padding-left: 16px;
+        height:42px;
         border-radius: 12px;
         border: 1px solid #396ea8;
         background: #081522;
@@ -151,15 +132,16 @@
 
     #Gen {
         width: 100%;
-        margin-top: 26px;
-        padding: 15px;
+        margin-top: 10px;
+        padding: 12px;
         border: none;
         font-size: 1rem;
         border-radius: 14px;
+        height: 46px;
         cursor: pointer;
         font-weight: 700;
         color: white;
-        background: linear-gradient(135deg, #3ca9ff, #1667d8);
+        background: linear-gradient(180deg, #245e9d, #18497d);
         transition: 0.2s;
         letter-spacing: 0.5px;
     }
@@ -176,20 +158,16 @@
     }
 
     #toolbar {
-        margin-top: 26px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .toolbarspacer {
-        flex: 1;
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 0.45fr 0.3fr 0.2fr;
+        gap: 5px;
     }
 
     #plus,
-    #minus #h {
-        width: 52px;
-        height: 52px;
+    #minus {
+        width: 42px;
+        height: 42px;
         border: none;
         border-radius: 14px;
         cursor: pointer;
@@ -201,12 +179,30 @@
         transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
     }
 
-    #plus{
-        font-size: 1.7rem;
+    #h{
+        width: 35px;
+        height: 35px;
+        border: none;
+        margin-top: 3px;
+        margin-left: 15px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-size: 1.45rem;
+        font-weight: 600;
+        font-family: "Segoe UI", sans-serif;
+        color: white; 
+        background: linear-gradient(180deg, #618cb8, #277fdd);
+        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
     }
 
-    #minus{
+    #plus {
+        font-size: 1.7rem;
+        padding-bottom: 18px;
+    }
+
+    #minus {
         font-size: 1.9rem;
+        padding-bottom: 43px;
     }
 
     #plus:hover,
@@ -223,39 +219,42 @@
         transform: translateY(0);
     }
 
-    #help {
-        margin-left: auto;
-    }
-
     canvas {
         position: absolute;
         top: 20px;
         border-radius: 18px;
         border: 2px solid rgba(90, 185, 255, 0.55);
         background: black;
-        outline: 1px solid rgba(255,255,255,0.05);
+        outline: 1px solid rgba(255, 255, 255, 0.05);
         box-shadow: 0 0 25px rgba(0, 120, 255, 0.2), 0 15px 45px rgba(0, 0, 0, 0.45);
     }
 
-    ::-webkit-scrollbar{
+    #bottomcontrols{
+        margin-top: auto;
+    }
+
+    ::-webkit-scrollbar {
         width: 10px;
     }
 
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
         background: #2b6db0;
         border-radius: 20px;
     }
 
-    ::-webkit-scrollbar-track{
+    ::-webkit-scrollbar-track {
         background: #071322;
     }
 
-    ::selection{
+    ::selection {
         background: #3ca8ff;
         color: white;
     }
 
-    button,input,select,canvas{
+    button,
+    input,
+    select,
+    canvas {
         transition: 0.2s ease;
     }
 
@@ -283,8 +282,6 @@
     <div id="input">
 
         <h1 id="Heading">Julia Fractals</h1>
-
-        <p class="subtitle">Fractal Explorer</p>
 
         <h3 id="Location"></h3>
 
@@ -324,18 +321,20 @@
 
         </div>
 
-        <button type="button" id="Gen" onclick="generate()">Generate</button>
+        <div id="bottomcontrols">
 
-        <div id="toolbar">
+            <button type="button" id="Gen" onclick="generate()">Generate</button>
 
-            <button type="button" id="plus" onclick="zoomin()">+</button>
-            <button type="button" id="minus" onclick="zoomout()">−</button>
+            <div id="toolbar">
 
-            <div class="toolbarspacer"></div>
+                <div id="help">
 
-            <div id="help">
+                    <a target="_blank" href="help.html"><button id="h">?</button></a>
 
-                <a target="_blank" href="help.html"><button id="h">?</button></a>
+                </div>
+
+                <button type="button" id="plus" onclick="zoomin()">+</button>
+                <button type="button" id="minus" onclick="zoomout()">−</button>
 
             </div>
 

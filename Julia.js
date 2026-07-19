@@ -2,7 +2,7 @@ var header = document.querySelector('h3')
 var canvas = document.querySelector('canvas')
 var dropdown = document.getElementById("cars");
 var ctx = canvas.getContext('2d')
-var height = Math.floor(((93 * window.innerHeight) / 100))
+var height = Math.floor(window.innerHeight - 60)
 var width = 0
 for (let h = 100; true; h -= 5) {
     width = Math.floor(((h * window.innerWidth) / 100))
