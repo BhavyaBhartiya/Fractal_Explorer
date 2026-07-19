@@ -182,16 +182,25 @@ function generate() {
         if (document.getElementById("MI").value.trim() !== "") {
             maxIterations = parseInt(document.getElementById("MI").value);
         }
+        else{
+            maxIterations = 256
+        }
     }
     if (document.getElementById("IC").value !== null) {
         if (document.getElementById("IC").value.trim() !== "") {
             constant_imaginary = parseFloat(document.getElementById("IC").value);
+        }
+        else{
+            constant_imaginary = 0.010
         }
     }
 
     if (document.getElementById("RC").value !== null) {
         if (document.getElementById("RC").value.trim() !== "") {
             constant_real = parseFloat(document.getElementById("RC").value);
+        }
+        else{
+            constant_real = 0.280
         }
     }
     zoom = 1
