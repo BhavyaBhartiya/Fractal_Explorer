@@ -263,20 +263,52 @@ window.addEventListener('keydown', (e) => {
     else if (e.key == '-') {
         zoomout()
     }
-    else if (e.key == 'w' || e.key == 'W') {
+    else if (e.altKey && (e.key == 'w' || e.key == 'W')) {
         pan_imaginary += 5 * (2 / (height * zoom));
         update();
     }
-    else if (e.key == 's' || e.key == 'S') {
+    else if (e.shiftKey && (e.key == 'w' || e.key == 'W')) {
+        pan_imaginary += 10 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.key == 'w' || e.key == 'W') {
+        pan_imaginary += 20 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.ctrlKey && (e.key == 's' || e.key == 'S')) {
         pan_imaginary += -5 * (2 / (height * zoom));
         update();
     }
-    else if (e.key == 'a' || e.key == 'A') {
+    else if (e.shiftKey && (e.key == 's' || e.key == 'S')) {
+        pan_imaginary += -10 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.key == 's' || e.key == 'S') {
+        pan_imaginary += -20 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.ctrlKey && (e.key == 'a' || e.key == 'A')) {
         pan_real += 5 * (2 / (height * zoom));
         update();
     }
-    else if (e.key == 'd' || e.key == 'D') {
+    else if (e.shiftKey && (e.key == 'a' || e.key == 'A')) {
+        pan_real += 10 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.key == 'a' || e.key == 'A') {
+        pan_real += 20 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.ctrlKey && (e.key == 'd' || e.key == 'D')) {
         pan_real += -5 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.shiftKey && (e.key == 'd' || e.key == 'D')) {
+        pan_real += -10 * (2 / (height * zoom));
+        update();
+    }
+    else if (e.key == 'd' || e.key == 'D') {
+        pan_real += -20 * (2 / (height * zoom));
         update();
     }
     else if (e.ctrlKey && e.key == 'ArrowRight') {
