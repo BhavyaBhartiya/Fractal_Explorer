@@ -286,15 +286,15 @@ window.addEventListener('keydown', (e) => {
     }
     else if (e.shiftKey && e.key == 'ArrowRight') {
         constant_real += 0.001
-        constant_real = Math.round(constant_real * 1000) / 1000
+        constant_real = Math.round(constant_real * 10000) / 10000
         update()
     }
     else if (e.key == 'ArrowRight') {
         constant_real += 0.01
-        constant_real = Math.round(constant_real * 1000) / 1000
+        constant_real = Math.round(constant_real * 10000) / 10000
         update()
     }
-    else if (e.ctrlKey && e.key == 'Arrowleft') {
+    else if (e.ctrlKey && e.key == 'ArrowLeft') {
         constant_real -= 0.0001
         constant_real = Math.round(constant_real * 10000) / 10000
         update()
