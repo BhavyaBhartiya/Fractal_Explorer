@@ -7,147 +7,340 @@
     <title>Julia Fractals</title>
 </head>
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     body {
-        background: rgb(0, 15, 46);
+        background: radial-gradient((circle at top, #143d72 0%, #081a31 35%, #040d18 100%));
         color: white;
-        font-size: medium;
-        font-family: cursive;
-    }
-
-    canvas {
-        border: 1px solid white;
-    }
-
-    #Location {
-        position: absolute;
-        top: 60px;
-        left: 35px;
-    }
-
-    #Heading {
-        margin: 0;
-        margin-top: 2px;
-        font-size: 2.5em;
-        color: white;
-    }
-
-    canvas {
-        position: absolute;
-        margin: 0;
-        top: 70px;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        overflow: hidden;
     }
 
     #input {
         position: absolute;
-        top: 125px;
-        left: 35px;
+        left: 20px;
+        top: 20px;
+        width: 350px;
+        padding: 28px;
+        border-radius: 22px;
+        background: rgba(12, 29, 52, 0.96);
+        border: 1px solid rgba(90, 175, 255, 0.3);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45), inset 0 1px rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
     }
 
-    input {
-        font-family: cursive;
-        background: beige;
-        border-radius: 5px;
-        font-size: medium;
+    #Heading {
+        margin: 0;
+        text-align: center;
+        font-size: 2.15rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: white;
+        text-shadow: 0 0 16px rgba(70, 170, 255, 0.3);
     }
 
-    #Gen {
-        font-size: 1.5em;
-        color: cornsilk;
-        background: slategray;
-        border-radius: 15px;
-        font-family: cursive;
-        padding: 10px 15px 10px 15px;
+    .subtitle {
+        text-align: center;
+        color: #8fd2ff;
+        margin-top: 6px;
+        margin-bottom: 22px;
+        font-size: 0.95rem;
     }
 
-    #plus {
+    #Location {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 28px;
+        background: linear-gradient(180deg, rgba(32, 63, 99, 0.95), rgba(20, 42, 69, 0.95));
+        border: 1px solid rgba(90, 170, 255, 0.3);
+        border-radius: 14px;
+        color: #ccecff;
+        font-size: 0.95rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 62px;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.4;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+    }
+
+    .section {
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 18px;
+    }
+
+    .section:not(:last-of-type)::after {
+        content: "";
         position: absolute;
-        top: 330px;
-        left: 193px;
-        font-size: 1.4em;
-        color: cornsilk;
-        background: slategray;
-        border-radius: 12px;
-        border-color: black;
-        padding: 5px 10px 5px 10px;
-    }
-
-    #minus {
-        position: absolute;
-        top: 330px;
-        left: 255px;
-        font-size: 1.4em;
-        color: cornsilk;
-        background: slategray;
-        border-radius: 12px;
-        padding: 5px 10px 5px 10px;
-    }
-
-    #cars {
-        font-family: cursive;
-        background: beige;
-        border-radius: 5px;
-        font-size: medium;
+        left: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.2), transparent);
     }
 
     label {
-        font-size: medium;
-        font-family: cursive;
+        display: block;
+        margin-bottom: 8px;
+        color: #d8ebff;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 14px;
+        padding-left: 16px;
+        border-radius: 12px;
+        border: 1px solid #396ea8;
+        background: #081522;
+        color: white;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+
+    input:hover {
+        border-color: #5cbcff;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #69c8ff;
+        box-shadow: 0 0 15px rgba(0, 150, 255, 0.35);
+    }
+
+    input::placeholder {
+        color: #7ca9d8;
+        opacity: 1;
+    }
+
+    #cars {
+        width: 100%;
+        padding: 12px 14px;
+        padding-left: 16px;
+        border-radius: 12px;
+        border: 1px solid #396ea8;
+        background: #081522;
+        color: white;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+
+    #cars:hover {
+        border-color: #5cbcff;
+    }
+
+    #cars:focus {
+        outline: none;
+        border-color: #69c8ff;
+    }
+
+    #Gen {
+        width: 100%;
+        margin-top: 26px;
+        padding: 15px;
+        border: none;
+        font-size: 1rem;
+        border-radius: 14px;
+        cursor: pointer;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(135deg, #3ca9ff, #1667d8);
+        transition: 0.2s;
+        letter-spacing: 0.5px;
+    }
+
+    #Gen:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 120, 255, 0.4);
+        filter: brightness(1.08);
+    }
+
+    #Gen:active {
+        transform: translateY(0);
+        filter: brightness(0.96);
+    }
+
+    #toolbar {
+        margin-top: 26px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .toolbarspacer {
+        flex: 1;
+    }
+
+    #plus,
+    #minus #h {
+        width: 52px;
+        height: 52px;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        font-size: 1.45rem;
+        font-weight: 600;
+        font-family: "Segoe UI", sans-serif;
+        color: white;
+        background: linear-gradient(180deg, #245e9d, #18497d);
+        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    #plus{
+        font-size: 1.7rem;
+    }
+
+    #minus{
+        font-size: 1.9rem;
+    }
+
+    #plus:hover,
+    #minus:hover,
+    #h:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(180deg, #3498ff, #236fc9);
+        box-shadow: 0 10px 22px rgba(0, 140, 255, 0.35);
+    }
+
+    #plus:active,
+    #minus:active,
+    #h:active {
+        transform: translateY(0);
     }
 
     #help {
+        margin-left: auto;
+    }
+
+    canvas {
         position: absolute;
-        top: 390px;
-        left: 40px;
+        top: 20px;
+        border-radius: 18px;
+        border: 2px solid rgba(90, 185, 255, 0.55);
+        background: black;
+        outline: 1px solid rgba(255,255,255,0.05);
+        box-shadow: 0 0 25px rgba(0, 120, 255, 0.2), 0 15px 45px rgba(0, 0, 0, 0.45);
     }
-    #h{
-        font-family: cursive;
-        font-size: 1.2em;
-        margin: 0;
-        padding: 0 10px 4px 10px;
-        border-radius: 100%;
-        border-width: 2px;
-        color:white;
-        opacity: 0.8;
-        background-color:rgb(50, 50, 50);
+
+    ::-webkit-scrollbar{
+        width: 10px;
     }
-    #h:hover{
-        color: black;
-        opacity: 1;
-        background-color: white;
+
+    ::-webkit-scrollbar{
+        background: #2b6db0;
+        border-radius: 20px;
+    }
+
+    ::-webkit-scrollbar-track{
+        background: #071322;
+    }
+
+    ::selection{
+        background: #3ca8ff;
+        color: white;
+    }
+
+    button,input,select,canvas{
+        transition: 0.2s ease;
+    }
+
+    @media(min-width:1000px) {
+        canvas {
+            transition: box-shadow 0.25s, border-color 0.25s;
+        }
+
+        canvas:hover {
+            border-color: #70c8ff;
+            box-shadow: 0 0 35px rgba(0, 170, 255, 0.28), 0 18px 55px rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    @media(max-width:1000px) {
+        #input {
+            width: 320px;
+            padding: 24px;
+        }
     }
 </style>
 
 <body>
-    <center>
-        <h1 id = "Heading">Julia Fractals</h1>
-    </center>
-
-    <h3 id = "Location"></h3>
 
     <div id="input">
-        <label for="RC">Real C: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <input type="text" id="RC" name="RC" required><br><br>
-        <label for="IC">Imaginary C: </label>
-        <input type="text" id="IC" name="IC" required><br><br>
-        <label for="MI">Iterations: &nbsp;&nbsp;</label>
-        <input type="text" id="MI" name="MI" required><br><br>
-        <label for="cars" id="car">Theme: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <select name="cars" id="cars">
-            <option value="0">GREYSCALE</option>
-            <option value="1">AURORA</option>
-            <option value="2">FIRE</option>
-            <option value="3">PASTEL RAINBOW</option>
-        </select><br><br>
+
+        <h1 id="Heading">Julia Fractals</h1>
+
+        <p class="subtitle">Fractal Explorer</p>
+
+        <h3 id="Location"></h3>
+
+        <div class="section">
+
+            <label for="RC">Real Constant</label>
+            <input type="text" id="RC" name="RC" placeholder="0.2800" required>
+
+        </div>
+
+        <div class="section">
+
+            <label for="IC">Imaginary Constant</label>
+            <input type="text" id="IC" name="IC" placeholder="0.0100" required>
+
+        </div>
+
+        <div class="section">
+
+            <label for="MI">Maximum Iterations</label>
+            <input type="text" id="MI" name="MI" placeholder="256" required>
+
+        </div>
+
+        <div class="section">
+
+            <label for="cars">Colouring Scheme</label>
+
+            <select name="cars" id="cars">
+
+                <option value="0">Greyscale</option>
+                <option value="1">Aurora</option>
+                <option value="2">Fire</option>
+                <option value="3">Pastel Rainbow</option>
+
+            </select>
+
+        </div>
+
         <button type="button" id="Gen" onclick="generate()">Generate</button>
-    </div>
 
-    <div id="ZOOM">
-        <button type="button" id="plus" onclick="zoomin()">+</button>
-        <button type="button" id="minus" onclick="zoomout()">−</button>
-    </div>
+        <div id="toolbar">
 
-    <div id="help">
-        <a target="_blank" href="help.html"><button id="h">?</button></a>
+            <button type="button" id="plus" onclick="zoomin()">+</button>
+            <button type="button" id="minus" onclick="zoomout()">−</button>
+
+            <div class="toolbarspacer"></div>
+
+            <div id="help">
+
+                <a target="_blank" href="help.html"><button id="h">?</button></a>
+
+            </div>
+
+        </div>
+
     </div>
 
     <canvas id="canv"></canvas>

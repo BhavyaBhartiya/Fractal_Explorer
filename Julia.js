@@ -2,7 +2,7 @@ var header = document.querySelector('h3')
 var canvas = document.querySelector('canvas')
 var dropdown = document.getElementById("cars");
 var ctx = canvas.getContext('2d')
-var height = Math.floor(((85 * window.innerHeight) / 100))
+var height = Math.floor(((93 * window.innerHeight) / 100))
 var width = 0
 for (let h = 100; true; h -= 5) {
     width = Math.floor(((h * window.innerWidth) / 100))
@@ -10,7 +10,7 @@ for (let h = 100; true; h -= 5) {
         break;
     }
 }
-var center_align = 300 + ((window.innerWidth - 300 - width) / 2)
+var center_align = document.getElementById("input").offsetWidth + 20 + ((window.innerWidth - document.getElementById("input").offsetWidth - 20 - width) / 2)
 document.getElementById('canv').style.left = center_align + 'px'
 var mouseX = 0
 var mouseY = 0
@@ -159,14 +159,14 @@ function update() {
 }
 
 function size_change() {
-    height = Math.floor(((85 * window.innerHeight) / 100))
+    height = Math.floor(((93 * window.innerHeight) / 100))
     for (let h = 100; true; h -= 5) {
         width = Math.floor(((h * window.innerWidth) / 100))
         if (width <= (height + 50)) {
             break;
         }
     }
-    center_align = 300 + ((window.innerWidth - 300 - width) / 2)
+    center_align = document.getElementById("input").offsetWidth + 20 + ((window.innerWidth - document.getElementById("input").offsetWidth - 20 - width) / 2)
     document.getElementById('canv').style.left = center_align + 'px'
     canvas.width = width
     canvas.height = height
