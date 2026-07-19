@@ -257,7 +257,7 @@ window.addEventListener('keydown', (e) => {
     if (e.key == 'Enter') {
         generate()
     }
-    else if (e.key == '=') {
+    else if (e.key == '=' || (e.shiftKey && e.key == '+')) {
         zoomin()
     }
     else if (e.key == '-') {
@@ -275,7 +275,7 @@ window.addEventListener('keydown', (e) => {
         pan_imaginary += 20 * (2 / (height * zoom));
         update();
     }
-    else if (e.ctrlKey && (e.key == 's' || e.key == 'S')) {
+    else if (e.altKey && (e.key == 's' || e.key == 'S')) {
         pan_imaginary += -5 * (2 / (height * zoom));
         update();
     }
@@ -287,7 +287,7 @@ window.addEventListener('keydown', (e) => {
         pan_imaginary += -20 * (2 / (height * zoom));
         update();
     }
-    else if (e.ctrlKey && (e.key == 'a' || e.key == 'A')) {
+    else if (e.altKey && (e.key == 'a' || e.key == 'A')) {
         pan_real += 5 * (2 / (height * zoom));
         update();
     }
@@ -299,7 +299,7 @@ window.addEventListener('keydown', (e) => {
         pan_real += 20 * (2 / (height * zoom));
         update();
     }
-    else if (e.ctrlKey && (e.key == 'd' || e.key == 'D')) {
+    else if (e.key == 'D') {
         pan_real += -5 * (2 / (height * zoom));
         update();
     }
@@ -307,7 +307,7 @@ window.addEventListener('keydown', (e) => {
         pan_real += -10 * (2 / (height * zoom));
         update();
     }
-    else if (e.key == 'd' || e.key == 'D') {
+    else if (e.key == 'd') {
         pan_real += -20 * (2 / (height * zoom));
         update();
     }
